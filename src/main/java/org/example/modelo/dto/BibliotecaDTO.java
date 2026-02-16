@@ -26,7 +26,7 @@ public class BibliotecaDTO {
         this.fechaAdquisicion = fechaAdquisicion;
         this.tiempoTotalJugado = tiempoTotalJugado;
         this.ultimaFechaJuego = ultimaFechaJuego;
-        this.estadoInstalacion = estadoInstalacion;
+        this.estadoInstalacion = estadoInstalacion.NO_INSTALADO;
     }
 
     public int getIdBiblio() {

@@ -25,7 +25,7 @@ public class CompraDTO {
         this.metodoPago = metodoPago;
         this.precioSinDescuento = precioSinDescuento;
         this.precioDescuentoAplicado = precioDescuentoAplicado;
-        this.estadoCompra = estadoCompra;
+        this.estadoCompra = estadoCompra.PENDIENTE;
     }
 
     public int getIdCompra() {

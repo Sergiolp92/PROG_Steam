@@ -26,6 +26,34 @@ public class UsuarioForm {
         this.avatar = avatar;
     }
 
+    public String getNick() {
+        return nick;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getContrasenia() {
+        return contrasenia;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getPais() {
+        return pais;
+    }
+
+    public String getFechaN() {
+        return fechaN;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
     public List<ErrorDTO> validar() {
         List<ErrorDTO> errores = new ArrayList<>();
         String regex = "^[a-zA-Z_][a-zA-Z0-9_-]{2,19}$";

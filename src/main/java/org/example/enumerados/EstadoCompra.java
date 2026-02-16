@@ -1,5 +1,5 @@
 package org.example.enumerados;
 
 public enum EstadoCompra {
-    COMPLETADA, REEMBOLSADA;
+    COMPLETADA, REEMBOLSADA,PENDIENTE,CANCELADA;
 }

@@ -3,9 +3,8 @@ package org.example.modelo.dto;
 import org.example.enumerados.EstadoReseña;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
-public class ReseñaDTO {
+public class ReseniaDTO {
 
     private int idReseña;
     private UsuarioDTO usuario;
@@ -17,7 +16,7 @@ public class ReseñaDTO {
     private LocalDate fechaEdicionR;
     private EstadoReseña estado;
 
-    public ReseñaDTO(int idReseña, UsuarioDTO usuario, JuegoDTO juego, boolean recomendado, String tResenia, int horasJugadas, LocalDate fechaPublicacionR, LocalDate fechaEdicionR, EstadoReseña estado) {
+    public ReseniaDTO(int idReseña, UsuarioDTO usuario, JuegoDTO juego, boolean recomendado, String tResenia, int horasJugadas, LocalDate fechaPublicacionR, LocalDate fechaEdicionR, EstadoReseña estado) {
         this.idReseña = idReseña;
         this.usuario = usuario;
         this.juego = juego;
@@ -26,7 +25,7 @@ public class ReseñaDTO {
         this.horasJugadas = horasJugadas;
         this.fechaPublicacionR = fechaPublicacionR;
         this.fechaEdicionR = fechaEdicionR;
-        this.estado = estado;
+        this.estado = estado.PUBLICADA;
     }
 
     public int getIdReseña() {

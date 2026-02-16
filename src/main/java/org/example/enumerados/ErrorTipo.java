@@ -7,7 +7,8 @@ public enum ErrorTipo {
     VALOR_DEMASIADO_BAJO("El valor es demasiado bajo"),
     NO_ENCONTRADO("No se encontró el elemento"),
     DUPLICADO("El elemento está duplicado"),
-    PAIS_NO_VALIDO("Pais no encontrado");
+    PAIS_NO_VALIDO("Pais no encontrado"),
+    FUERA_DE_RANGO("Valor fuera de rango");
 
     private final String mensaje;
 
