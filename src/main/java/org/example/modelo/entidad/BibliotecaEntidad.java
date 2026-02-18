@@ -1,31 +1,36 @@
 package org.example.modelo.entidad;
 
 import org.example.enumerados.EstadoInstalacion;
-import org.example.modelo.dto.JuegoDTO;
-import org.example.modelo.dto.UsuarioDTO;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 public class BibliotecaEntidad {
 
-    private int idBiblio;
-    private int idUsuario;
-
-    private int idJuego;
-
+    private Long idBiblio;
+    private Long idUsuario;
+    private Long idJuego;
     private LocalDate fechaAdquisicion;
-    private int tiempoTotalJugado;
+    private Double tiempoTotalJugado;
     private LocalDate ultimaFechaJuego;
     private EstadoInstalacion estadoInstalacion;
 
-    public int getIdBiblio() {
+    public BibliotecaEntidad(Long idBiblio, Long idUsuario, Long idJuego, LocalDate fechaAdquisicion, Double tiempoTotalJugado) {
+        this.idBiblio = idBiblio;
+        this.idUsuario = idUsuario;
+        this.idJuego = idJuego;
+        this.fechaAdquisicion = fechaAdquisicion;
+        this.tiempoTotalJugado = tiempoTotalJugado;
+        this.ultimaFechaJuego = ultimaFechaJuego;
+        this.estadoInstalacion = estadoInstalacion;
+    }
+
+    public Long getIdBiblio() {
         return idBiblio;
     }
 
 
 
-    public int getIdUsuario() {
+    public Long getIdUsuario() {
         return idUsuario;
     }
 
@@ -34,7 +39,7 @@ public class BibliotecaEntidad {
 
 
 
-    public int getIdJuego() {
+    public Long getIdJuego() {
         return idJuego;
     }
 
@@ -50,7 +55,7 @@ public class BibliotecaEntidad {
 
 
 
-    public int getTiempoTotalJugado() {
+    public Double getTiempoTotalJugado() {
         return tiempoTotalJugado;
     }
 

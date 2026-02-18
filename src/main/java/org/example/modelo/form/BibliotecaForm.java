@@ -10,13 +10,13 @@ import java.util.List;
 
 public class BibliotecaForm {
 
-    private Integer idUsuario;
-    private Integer idJuego;
+    private Long idUsuario;
+    private Long idJuego;
     private LocalDate fechaAdquisicion;
     private Double tiempoDeJuego;
     private LocalDate ultimaVezJugada;
 
-    public BibliotecaForm(int idUsuario, int idJuego, LocalDate fechaAdquisicion,Double tiempoDeJuego,LocalDate ultimaVezJugada) {
+    public BibliotecaForm(Long idUsuario, Long idJuego, LocalDate fechaAdquisicion,Double tiempoDeJuego,LocalDate ultimaVezJugada) {
         this.idUsuario = idUsuario;
         this.idJuego = idJuego;
         this.fechaAdquisicion = fechaAdquisicion;
@@ -24,11 +24,11 @@ public class BibliotecaForm {
         this.ultimaVezJugada = ultimaVezJugada;
     }
 
-    public int getIdUsuario() {
+    public Long getIdUsuario() {
         return idUsuario;
     }
 
-    public int getIdJuego() {
+    public Long getIdJuego() {
         return idJuego;
     }
 

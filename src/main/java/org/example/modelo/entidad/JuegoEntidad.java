@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 public class JuegoEntidad {
 
-    private int idJuego;
+    private Long idJuego;
     private String titulo;
     private String descripcion;
     private String desarrollador;
@@ -20,7 +20,21 @@ public class JuegoEntidad {
     private EstadoJuego estadoJuego;
 
 
-    public int getIdJuego() {
+    public JuegoEntidad(Long idJuego, String titulo, String descripcion, String desarrollador, LocalDate fechaLanz, double precioB, int descuento, String categoria, ClasificacionEdad clasificacionEdad, String idioma, EstadoJuego estadoJuego) {
+        this.idJuego = idJuego;
+        this.titulo = titulo;
+        this.descripcion = descripcion;
+        this.desarrollador = desarrollador;
+        this.fechaLanz = fechaLanz;
+        this.precioB = precioB;
+        this.descuento = descuento;
+        this.categoria = categoria;
+        this.clasificacionEdad = clasificacionEdad;
+        this.idioma = idioma;
+        this.estadoJuego = estadoJuego;
+    }
+
+    public Long getIdJuego() {
         return idJuego;
     }
 

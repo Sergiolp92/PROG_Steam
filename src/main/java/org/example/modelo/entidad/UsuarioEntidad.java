@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 public class UsuarioEntidad {
 
-    private int idUsuario;
+    private Long id;
     private String nombreUsuario;
     private String email;
     private String nombreRealU;
@@ -17,8 +17,21 @@ public class UsuarioEntidad {
     private double saldo;
     private EstadoCuenta estadoCuenta;
 
-    public int getIdUsuario() {
-        return idUsuario;
+    public UsuarioEntidad(Long id, String nombreUsuario, String email, String nombreRealU, String pais, LocalDate fechaN, LocalDate fechaRegis, String avatar, double saldo, EstadoCuenta estadoCuenta) {
+        this.id = id;
+        this.nombreUsuario = nombreUsuario;
+        this.email = email;
+        this.nombreRealU = nombreRealU;
+        this.pais = pais;
+        this.fechaN = fechaN;
+        this.fechaRegis = fechaRegis;
+        this.avatar = avatar;
+        this.saldo = saldo;
+        this.estadoCuenta = estadoCuenta;
+    }
+
+    public Long getId() {
+        return id;
     }
 
 

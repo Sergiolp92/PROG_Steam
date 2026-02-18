@@ -9,15 +9,15 @@ import java.util.List;
 
 public class CompraForm {
 
-    private Integer idUsuario;
-    private Integer idJuego;
+    private Long idUsuario;
+    private Long idJuego;
     private LocalDate fechaC;
     private String metodoPago;
     private Double precioOriginal;
     private Double precioFinal;
     private Integer descuento;
 
-    public CompraForm(Integer idUsuario, Integer idJuego, LocalDate fechaC, String metodoPago, Double precioOriginal, Double precioFinal,Integer descuento) {
+    public CompraForm(Long idUsuario, Long idJuego, LocalDate fechaC, String metodoPago, Double precioOriginal, Double precioFinal,Integer descuento) {
         this.idUsuario = idUsuario;
         this.idJuego = idJuego;
         this.fechaC = fechaC;
@@ -31,11 +31,11 @@ public class CompraForm {
         return descuento;
     }
 
-    public Integer getIdUsuario() {
+    public Long getIdUsuario() {
         return idUsuario;
     }
 
-    public Integer getIdJuego() {
+    public Long getIdJuego() {
         return idJuego;
     }
 
@@ -83,6 +83,6 @@ public class CompraForm {
         }
 
 
-
+        return errores;
     }
 }

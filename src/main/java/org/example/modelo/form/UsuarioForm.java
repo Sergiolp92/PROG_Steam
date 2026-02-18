@@ -1,23 +1,31 @@
 package org.example.modelo.form;
 
 import org.example.enumerados.ErrorTipo;
+import org.example.enumerados.EstadoCuenta;
 import org.example.modelo.dto.ErrorDTO;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UsuarioForm {
 
-    private String nick;
+
+
+    public double saldo;
+    public EstadoCuenta estadoCuenta;
+
+    private String nombreusuario;
     private String email;
     private String contrasenia;
     private String nombre;
     private String pais;
-    private String fechaN;
+    private LocalDate fechaN;
+    public LocalDate fechaRegis;
     private String avatar;
 
-    public UsuarioForm(String nick, String email, String contrasenia, String nombre, String pais, String fechaN , String avatar) {
-        this.nick = nick;
+    public UsuarioForm(String nombreusuario, String email, String contrasenia, String nombre, String pais, LocalDate fechaN ,LocalDate fechaRegis, String avatar) {
+        this.nombreusuario = nombreusuario;
         this.email = email;
         this.contrasenia = contrasenia;
         this.nombre = nombre;
@@ -26,8 +34,20 @@ public class UsuarioForm {
         this.avatar = avatar;
     }
 
-    public String getNick() {
-        return nick;
+    public LocalDate getFechaRegis() {
+        return fechaRegis;
+    }
+
+    public double getSaldo() {
+        return saldo;
+    }
+
+    public EstadoCuenta getEstadoCuenta() {
+        return estadoCuenta;
+    }
+
+    public String getnombreusuario() {
+        return nombreusuario;
     }
 
     public String getEmail() {
@@ -46,7 +66,7 @@ public class UsuarioForm {
         return pais;
     }
 
-    public String getFechaN() {
+    public LocalDate getFechaN() {
         return fechaN;
     }
 
@@ -59,10 +79,10 @@ public class UsuarioForm {
         String regex = "^[a-zA-Z_][a-zA-Z0-9_-]{2,19}$";
 
 
-        if (nick == null || nick.isBlank()){
-            errores.add(new ErrorDTO("nick", ErrorTipo.REQUERIDO));
-        }else if (!nick.matches(regex)){
-            errores.add(new ErrorDTO("nick", ErrorTipo.FORMATO_INVALIDO));
+        if (nombreusuario == null || nombreusuario.isBlank()){
+            errores.add(new ErrorDTO("nombres usuario", ErrorTipo.REQUERIDO));
+        }else if (!nombreusuario.matches(regex)){
+            errores.add(new ErrorDTO("nombres usuario", ErrorTipo.FORMATO_INVALIDO));
         }
 
 
@@ -91,7 +111,7 @@ public class UsuarioForm {
 
         }
 
-        if (fechaN == null || fechaN.isBlank()) {
+        if (fechaN == null ) {
             errores.add(new ErrorDTO("fecha nacimiento", ErrorTipo.REQUERIDO));
 
         }

@@ -1,5 +1,5 @@
 package org.example.enumerados;
 
-public enum EstadoReseña {
+public enum EstadoResenia {
     PUBLICADA,OCULTA,ELIMINADA;
 }

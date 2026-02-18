@@ -9,19 +9,25 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 public class CompraEntidad {
-    private int idCompra;
+    private Long idCompra;
     private LocalDate fechaDeCompra;
     private MetodoPago metodoPago;
     private double precioSinDescuento;
     private double precioDescuentoAplicado;
     private EstadoCompra estadoCompra;
 
-    public int getIdCompra() {
-        return idCompra;
+    public CompraEntidad(Long idCompra, LocalDate fechaDeCompra, MetodoPago metodoPago, double precioSinDescuento, double precioDescuentoAplicado, EstadoCompra estadoCompra) {
+        this.idCompra = idCompra;
+        this.fechaDeCompra = fechaDeCompra;
+        this.metodoPago = metodoPago;
+        this.precioSinDescuento = precioSinDescuento;
+        this.precioDescuentoAplicado = precioDescuentoAplicado;
+        this.estadoCompra = estadoCompra;
     }
 
-
-
+    public Long getIdCompra() {
+        return idCompra;
+    }
 
 
 

@@ -1,14 +1,12 @@
-package org.example.modelo.dto;
+package org.example.modelo.entidad;
 
 import org.example.enumerados.EstadoResenia;
 
 import java.time.LocalDate;
 
-public class ReseniaDTO {
+public class ReseniaEntidad {
 
-    private int idReseña;
-    private UsuarioDTO usuario;
-    private JuegoDTO juego;
+    private Long idResenia;
     private boolean recomendado;
     private String tResenia;
     private int horasJugadas;
@@ -16,34 +14,20 @@ public class ReseniaDTO {
     private LocalDate fechaEdicionR;
     private EstadoResenia estado;
 
-    public ReseniaDTO(int idReseña, UsuarioDTO usuario, JuegoDTO juego, boolean recomendado, String tResenia, int horasJugadas, LocalDate fechaPublicacionR, LocalDate fechaEdicionR, EstadoResenia estado) {
-        this.idReseña = idReseña;
-        this.usuario = usuario;
-        this.juego = juego;
+
+    public ReseniaEntidad(Long idResenia, boolean recomendado, String tResenia, int horasJugadas, LocalDate fechaPublicacionR, LocalDate fechaEdicionR, EstadoResenia estado) {
+        this.idResenia = idResenia;
         this.recomendado = recomendado;
         this.tResenia = tResenia;
         this.horasJugadas = horasJugadas;
         this.fechaPublicacionR = fechaPublicacionR;
         this.fechaEdicionR = fechaEdicionR;
-        this.estado = estado.PUBLICADA;
+        this.estado = estado;
     }
 
-    public int getIdReseña() {
-        return idReseña;
+    public Long getIdResenia() {
+        return idResenia;
     }
-
-
-
-    public UsuarioDTO getUsuario() {
-        return usuario;
-    }
-
-
-
-    public JuegoDTO getJuego() {
-        return juego;
-    }
-
 
 
     public boolean isRecomendado() {
@@ -79,6 +63,5 @@ public class ReseniaDTO {
     public EstadoResenia getEstado() {
         return estado;
     }
-
 
 }
