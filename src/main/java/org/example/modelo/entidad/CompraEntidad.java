@@ -12,16 +12,16 @@ public class CompraEntidad {
     private Long idCompra;
     private LocalDate fechaDeCompra;
     private MetodoPago metodoPago;
-    private double precioSinDescuento;
-    private double precioDescuentoAplicado;
+    private double precioOriginal;
+    private double precioFinal;
     private EstadoCompra estadoCompra;
 
-    public CompraEntidad(Long idCompra, LocalDate fechaDeCompra, MetodoPago metodoPago, double precioSinDescuento, double precioDescuentoAplicado, EstadoCompra estadoCompra) {
+    public CompraEntidad(Long idCompra, LocalDate fechaDeCompra, MetodoPago metodoPago, double precioOriginal, double precioFinal, EstadoCompra estadoCompra) {
         this.idCompra = idCompra;
         this.fechaDeCompra = fechaDeCompra;
         this.metodoPago = metodoPago;
-        this.precioSinDescuento = precioSinDescuento;
-        this.precioDescuentoAplicado = precioDescuentoAplicado;
+        this.precioOriginal = precioOriginal;
+        this.precioFinal = precioFinal;
         this.estadoCompra = estadoCompra;
     }
 
@@ -43,14 +43,14 @@ public class CompraEntidad {
 
 
 
-    public double getPrecioSinDescuento() {
-        return precioSinDescuento;
+    public double precioOriginal() {
+        return precioOriginal;
     }
 
 
 
-    public double getPrecioDescuentoAplicado() {
-        return precioDescuentoAplicado;
+    public double precioFinal() {
+        return precioFinal;
     }
 
 

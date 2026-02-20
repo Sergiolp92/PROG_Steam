@@ -1,5 +1,6 @@
 package org.example.repositorios.enMemoria;
 
+import org.example.enumerados.ClasificacionEdad;
 import org.example.modelo.entidad.JuegoEntidad;
 import org.example.modelo.entidad.UsuarioEntidad;
 import org.example.modelo.form.JuegoForm;
@@ -13,16 +14,15 @@ import java.util.Optional;
 public class JuegosRepo implements IJuegosRepo {
 
     private static List<JuegoEntidad> juegos = new ArrayList<>();
-    private static Long idContador = 1L;
+    private static long idContador = (Long) 1L;
 
     @Override
     public void crear(JuegoForm form) {
-        Long id = idContador +1L;
-//    public JuegoEntidad(Long idJuego, String titulo, String descripcion, String desarrollador, LocalDate fechaLanz,
-//    double precioB, int descuento, String categoria,
-//    ClasificacionEdad clasificacionEdad, String idioma, EstadoJuego estadoJuego) {
-        var juego = new JuegoEntidad(id, form.getTitulo(), form.getDescripcion(), form.getDesarrollador(), form.getFechaL(),
-        form.getFechaL(), form.getClasiEdad(), form.getIdioma());
+        idContador  = idContador +1L;
+
+        var juego = new JuegoEntidad((Long)idContador, form.getTitulo(), form.getDescripcion(), form.getDesarrollador(),
+                form.getFechaL(), form.getPrecioB(), form.getDescuento(), form.getCategoria(),form.getClasiEdad() ,
+                form.getIdioma(), form.getEstadoJuego());
         juegos.add(juego);
 
     }
@@ -55,9 +55,9 @@ public class JuegosRepo implements IJuegosRepo {
             throw new IllegalArgumentException("Juego no encontrado");
         }
 
-        var juegoActualizado = new JuegoEntidad(id, form.getTitulo(), form.getDescripcion(), form.getDesarrollador(), form.getFechaL(),
-                form.getFechaL(), form.getClasiEdad(), form.getIdioma());
-        juegos.removeIf(j ->id.equals(j.getIdJuego()));
+        var juegoActualizado = new JuegoEntidad((Long)idContador, form.getTitulo(), form.getDescripcion(), form.getDesarrollador(),
+                form.getFechaL(), form.getPrecioB(), form.getDescuento(), form.getCategoria(),form.getClasiEdad() ,
+                form.getIdioma(), form.getEstadoJuego());
         juegos.add(juegoActualizado);
 
         return Optional.of(juegoActualizado);
