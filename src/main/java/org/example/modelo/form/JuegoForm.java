@@ -2,6 +2,7 @@ package org.example.modelo.form;
 
 import org.example.enumerados.ClasificacionEdad;
 import org.example.enumerados.ErrorTipo;
+import org.example.enumerados.EstadoJuego;
 import org.example.modelo.dto.ErrorDTO;
 
 import java.time.LocalDate;
@@ -12,14 +13,16 @@ public class JuegoForm {
     
     private String titulo;
     private String desarrollador;
-    private String fechaL;
-    private String precioB;
-    private String clasiEdad;
+    private LocalDate fechaL;
+    private Double precioB;
+    private ClasificacionEdad clasiEdad;
     private String descripcion;
     private Integer descuento;
+    private String categoria;
     private String idioma;
+    private EstadoJuego estadoJuego;
 
-    public JuegoForm(String titulo, String desarrollador, String fechaL, String precioB, String clasiEdad,String descripcion,Integer descuentoActual,String idioma) {
+    public JuegoForm(String titulo, String desarrollador, LocalDate fechaL, Double precioB, ClasificacionEdad clasiEdad,String descripcion,Integer descuentoActual,String categoria, String idioma, EstadoJuego estadoJuego) {
         this.titulo = titulo;
         this.desarrollador = desarrollador;
         this.fechaL = fechaL;
@@ -27,7 +30,17 @@ public class JuegoForm {
         this.clasiEdad = clasiEdad;
         this.descripcion = descripcion;
         this.descuento = descuento;
+        this.categoria = categoria;
         this.idioma = idioma;
+        this.estadoJuego = estadoJuego;
+    }
+
+    public EstadoJuego getEstadoJuego() {
+        return estadoJuego;
+    }
+
+    public String getCategoria() {
+        return categoria;
     }
 
     public String getTitulo() {
@@ -38,15 +51,15 @@ public class JuegoForm {
         return desarrollador;
     }
 
-    public String getFechaL() {
+    public LocalDate getFechaL() {
         return fechaL;
     }
 
-    public String getPrecioB() {
+    public Double getPrecioB() {
         return precioB;
     }
 
-    public String getClasiEdad() {
+    public ClasificacionEdad  getClasiEdad() {
         return clasiEdad;
     }
 
@@ -89,15 +102,10 @@ public class JuegoForm {
         }
 
 
-        if (precioB == null || precioB.isBlank()) {
+        if (precioB == null) {
             errores.add(new ErrorDTO("precio", ErrorTipo.REQUERIDO));
-        } else if (!precioB.matches(regex)) {
+        } else if (precioB < 0 || precioB > 999.99) {
             errores.add(new ErrorDTO("precio", ErrorTipo.FORMATO_INVALIDO));
-        } else {
-            double precio = Double.parseDouble(precioB);
-            if (precio < 0 || precio > 999.99) {
-                errores.add(new ErrorDTO("precio", ErrorTipo.FORMATO_INVALIDO));
-            }
         }
 
         if (descuento != null) {

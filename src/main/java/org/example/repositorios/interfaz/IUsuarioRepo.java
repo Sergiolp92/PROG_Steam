@@ -10,7 +10,7 @@ public interface IUsuarioRepo  {
 
 
     //crear
-    void crear(UsuarioForm form);
+    Optional<UsuarioEntidad> crear(UsuarioForm form);
 
     //leer
     Optional<UsuarioEntidad> leerPorId(Long id);

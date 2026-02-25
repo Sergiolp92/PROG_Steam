@@ -1,6 +1,7 @@
 package org.example.modelo.entidad;
 
 import org.example.enumerados.EstadoCuenta;
+import org.example.enumerados.PaisesPermitidos;
 
 import java.time.LocalDate;
 
@@ -10,14 +11,14 @@ public class UsuarioEntidad {
     private String nombreUsuario;
     private String email;
     private String nombreRealU;
-    private String pais;
+    private PaisesPermitidos pais;
     private LocalDate fechaN;
     private LocalDate fechaRegis;
     private String avatar;
-    private double saldo;
+    private Double saldo;
     private EstadoCuenta estadoCuenta;
 
-    public UsuarioEntidad(Long id, String nombreUsuario, String email, String nombreRealU, String pais, LocalDate fechaN, LocalDate fechaRegis, String avatar, double saldo, EstadoCuenta estadoCuenta) {
+    public UsuarioEntidad(Long id, String nombreUsuario, String email, String nombreRealU, PaisesPermitidos pais, LocalDate fechaN, LocalDate fechaRegis, String avatar, Double saldo, EstadoCuenta estadoCuenta) {
         this.id = id;
         this.nombreUsuario = nombreUsuario;
         this.email = email;
@@ -53,7 +54,7 @@ public class UsuarioEntidad {
 
 
 
-    public String getPais() {
+    public PaisesPermitidos getPais() {
         return pais;
     }
 
@@ -77,7 +78,7 @@ public class UsuarioEntidad {
 
 
 
-    public double getSaldo() {
+    public Double getSaldo() {
         return saldo;
     }
 
@@ -88,4 +89,7 @@ public class UsuarioEntidad {
     }
 
 
+    public String getContrasenia() {
+
+    }
 }

@@ -18,11 +18,10 @@ public class JuegosRepo implements IJuegosRepo {
     @Override
     public void crear(JuegoForm form) {
         Long id = idContador +1L;
-//    public JuegoEntidad(Long idJuego, String titulo, String descripcion, String desarrollador, LocalDate fechaLanz,
-//    double precioB, int descuento, String categoria,
-//    ClasificacionEdad clasificacionEdad, String idioma, EstadoJuego estadoJuego) {
+
         var juego = new JuegoEntidad(id, form.getTitulo(), form.getDescripcion(), form.getDesarrollador(), form.getFechaL(),
-        form.getFechaL(), form.getClasiEdad(), form.getIdioma());
+                form.getPrecioB(),form.getDescuento(),form.getCategoria(), form.getClasiEdad(), form.getIdioma(), form.getEstadoJuego());
+
         juegos.add(juego);
 
     }
@@ -30,7 +29,7 @@ public class JuegosRepo implements IJuegosRepo {
     @Override
     public Optional<JuegoEntidad> leerPorId(Long id) {
         return juegos.stream()
-                .filter(j -> j.getIdJuego().equals(id))
+                .filter(j -> id.equals(j.getIdJuego()))
                 .findFirst();
     }
 
@@ -56,7 +55,7 @@ public class JuegosRepo implements IJuegosRepo {
         }
 
         var juegoActualizado = new JuegoEntidad(id, form.getTitulo(), form.getDescripcion(), form.getDesarrollador(), form.getFechaL(),
-                form.getFechaL(), form.getClasiEdad(), form.getIdioma());
+                form.getPrecioB(),form.getDescuento(),form.getCategoria(), form.getClasiEdad(), form.getIdioma(), form.getEstadoJuego());
         juegos.removeIf(j ->id.equals(j.getIdJuego()));
         juegos.add(juegoActualizado);
 

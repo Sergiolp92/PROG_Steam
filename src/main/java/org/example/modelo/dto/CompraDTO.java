@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public class CompraDTO {
 
-    private int idCompra;
+    private Long idCompra;
     private UsuarioDTO usuario;
     private JuegoDTO juego;
     private LocalDate fechaDeCompra;
@@ -17,7 +17,7 @@ public class CompraDTO {
     private double precioDescuentoAplicado;
     private EstadoCompra estadoCompra;
 
-    public CompraDTO(int idCompra, UsuarioDTO usuario, JuegoDTO juego, LocalDate fechaDeCompra, MetodoPago metodoPago, double precioSinDescuento, double precioDescuentoAplicado, EstadoCompra estadoCompra) {
+    public CompraDTO(Long idCompra, UsuarioDTO usuario, JuegoDTO juego, LocalDate fechaDeCompra, MetodoPago metodoPago, double precioSinDescuento, double precioDescuentoAplicado, EstadoCompra estadoCompra) {
         this.idCompra = idCompra;
         this.usuario = usuario;
         this.juego = juego;
@@ -28,7 +28,7 @@ public class CompraDTO {
         this.estadoCompra = estadoCompra.PENDIENTE;
     }
 
-    public int getIdCompra() {
+    public Long getIdCompra() {
         return idCompra;
     }
 

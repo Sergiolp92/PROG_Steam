@@ -2,11 +2,13 @@ package org.example.modelo.form;
 
 import org.example.enumerados.ErrorTipo;
 import org.example.enumerados.EstadoCuenta;
+import org.example.enumerados.PaisesPermitidos;
 import org.example.modelo.dto.ErrorDTO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class UsuarioForm {
 
@@ -14,22 +16,22 @@ public class UsuarioForm {
 
     public double saldo;
     public EstadoCuenta estadoCuenta;
-
     private String nombreusuario;
     private String email;
     private String contrasenia;
     private String nombre;
-    private String pais;
+    private PaisesPermitidos pais;
     private LocalDate fechaN;
     public LocalDate fechaRegis;
+    ;
     private String avatar;
 
-    public UsuarioForm(String nombreusuario, String email, String contrasenia, String nombre, String pais, LocalDate fechaN ,LocalDate fechaRegis, String avatar) {
+    public UsuarioForm(String nombreusuario, String email, String contrasenia, String nombre, String pais,double saldo, LocalDate fechaN ,LocalDate fechaRegis, String avatar) {
         this.nombreusuario = nombreusuario;
         this.email = email;
         this.contrasenia = contrasenia;
         this.nombre = nombre;
-        this.pais = pais;
+        this.pais = PaisesPermitidos.valueOf(pais.toUpperCase());
         this.fechaN = fechaN;
         this.avatar = avatar;
     }
@@ -62,7 +64,7 @@ public class UsuarioForm {
         return nombre;
     }
 
-    public String getPais() {
+    public PaisesPermitidos getPais() {
         return pais;
     }
 
@@ -106,7 +108,7 @@ public class UsuarioForm {
         }
 
 
-        if (pais == null || pais.isBlank()) {
+        if (pais == null) {
             errores.add(new ErrorDTO("pais", ErrorTipo.REQUERIDO));
 
         }

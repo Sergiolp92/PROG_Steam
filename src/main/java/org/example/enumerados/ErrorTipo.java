@@ -8,7 +8,8 @@ public enum ErrorTipo {
     NO_ENCONTRADO("No se encontró el elemento"),
     DUPLICADO("El elemento está duplicado"),
     PAIS_NO_VALIDO("Pais no encontrado"),
-    FUERA_DE_RANGO("Valor fuera de rango");
+    FUERA_DE_RANGO("Valor fuera de rango"),
+    CUENTA("La cuenta está bloqueada o desactivada");
 
     private final String mensaje;
 

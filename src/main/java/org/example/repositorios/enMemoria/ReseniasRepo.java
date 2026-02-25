@@ -25,7 +25,7 @@ public class ReseniasRepo implements IReseniasRepo {
     @Override
     public Optional<ReseniaEntidad> leerPorId(Long id) {
         return resenias.stream()
-                .filter(u -> u.getIdResenia().equals(id))
+                .filter(u -> id.equals(u.getIdResenia()))
                 .findFirst();
     }
 

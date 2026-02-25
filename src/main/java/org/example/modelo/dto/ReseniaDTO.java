@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 public class ReseniaDTO {
 
-    private int idReseña;
+    private Long idResenia;
     private UsuarioDTO usuario;
     private JuegoDTO juego;
     private boolean recomendado;
@@ -16,8 +16,8 @@ public class ReseniaDTO {
     private LocalDate fechaEdicionR;
     private EstadoResenia estado;
 
-    public ReseniaDTO(int idReseña, UsuarioDTO usuario, JuegoDTO juego, boolean recomendado, String tResenia, int horasJugadas, LocalDate fechaPublicacionR, LocalDate fechaEdicionR, EstadoResenia estado) {
-        this.idReseña = idReseña;
+    public ReseniaDTO(Long idResenia, UsuarioDTO usuario, JuegoDTO juego, boolean recomendado, String tResenia, int horasJugadas, LocalDate fechaPublicacionR, LocalDate fechaEdicionR, EstadoResenia estado) {
+        this.idResenia = idResenia;
         this.usuario = usuario;
         this.juego = juego;
         this.recomendado = recomendado;
@@ -28,8 +28,8 @@ public class ReseniaDTO {
         this.estado = estado.PUBLICADA;
     }
 
-    public int getIdReseña() {
-        return idReseña;
+    public Long getIdResenia() {
+        return idResenia;
     }
 
 

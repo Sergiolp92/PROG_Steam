@@ -14,19 +14,19 @@ public class UsuariosRepo implements IUsuarioRepo {
     private static Long idContador = 1L;
 
     @Override
-    public void crear(UsuarioForm form) {
+    public Optional<UsuarioEntidad> crear(UsuarioForm form) {
         Long id = idContador +1L;
 
             var usuario = new UsuarioEntidad(id, form.getnombreusuario(), form.getEmail(), form.getNombre(), form.getPais(), form.getFechaN(),form.getFechaRegis(),
                     form.getAvatar(), form.getSaldo(),form.getEstadoCuenta());
             usuarios.add(usuario);
-
+        return Optional.of(usuario);
     }
 
     @Override
     public Optional<UsuarioEntidad> leerPorId(Long id) {
         return usuarios.stream()
-                .filter(u -> u.getId().equals(id))
+                .filter(u -> id.equals((u.getId())))
                 .findFirst();
     }
 

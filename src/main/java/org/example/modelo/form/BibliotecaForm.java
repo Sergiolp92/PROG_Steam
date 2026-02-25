@@ -13,10 +13,10 @@ public class BibliotecaForm {
     private Long idUsuario;
     private Long idJuego;
     private LocalDate fechaAdquisicion;
-    private Double tiempoDeJuego;
+    private Long tiempoDeJuego;
     private LocalDate ultimaVezJugada;
 
-    public BibliotecaForm(Long idUsuario, Long idJuego, LocalDate fechaAdquisicion,Double tiempoDeJuego,LocalDate ultimaVezJugada) {
+    public BibliotecaForm(Long idUsuario, Long idJuego, LocalDate fechaAdquisicion,Long tiempoDeJuego,LocalDate ultimaVezJugada) {
         this.idUsuario = idUsuario;
         this.idJuego = idJuego;
         this.fechaAdquisicion = fechaAdquisicion;
@@ -36,7 +36,7 @@ public class BibliotecaForm {
         return fechaAdquisicion;
     }
 
-    public Double getTiempoDeJuego() {
+    public Long getTiempoDeJuego() {
         return tiempoDeJuego;
     }
 

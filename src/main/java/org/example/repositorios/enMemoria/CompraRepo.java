@@ -20,7 +20,7 @@ public class CompraRepo implements ICompraRepo {
         Long id = idContador +1L;
 
         var compra = new CompraEntidad(id,form.getFechaC(),form.getMetodoPago(),form.getPrecioOriginal(),
-                form.getPrecioFinal());
+                form.getPrecioFinal(), form.getEstadoCompra());
         compras.add(compra);
 
     }
@@ -28,7 +28,7 @@ public class CompraRepo implements ICompraRepo {
     @Override
     public Optional<CompraEntidad> leerPorId(Long id) {
         return compras.stream()
-                .filter(c -> c.getIdCompra().equals(id))
+                .filter(c -> id.equals(c.getIdCompra()))
                 .findFirst();
     }
 
@@ -51,7 +51,7 @@ public class CompraRepo implements ICompraRepo {
         }
 
         var compraActualizada = new CompraEntidad(id,form.getFechaC(),form.getMetodoPago(),form.getPrecioOriginal(),
-                form.getPrecioFinal());
+                form.getPrecioFinal(), form.getEstadoCompra());
         compras.removeIf(c ->id.equals(c.getIdCompra()));
         compras.add(compraActualizada);
 

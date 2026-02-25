@@ -1,6 +1,8 @@
 package org.example.modelo.form;
 
 import org.example.enumerados.ErrorTipo;
+import org.example.enumerados.EstadoCompra;
+import org.example.enumerados.MetodoPago;
 import org.example.modelo.dto.ErrorDTO;
 
 import java.time.LocalDate;
@@ -12,12 +14,13 @@ public class CompraForm {
     private Long idUsuario;
     private Long idJuego;
     private LocalDate fechaC;
-    private String metodoPago;
+    private MetodoPago metodoPago;
     private Double precioOriginal;
     private Double precioFinal;
     private Integer descuento;
+    private EstadoCompra estadoCompra;
 
-    public CompraForm(Long idUsuario, Long idJuego, LocalDate fechaC, String metodoPago, Double precioOriginal, Double precioFinal,Integer descuento) {
+    public CompraForm(Long idUsuario, Long idJuego, LocalDate fechaC, MetodoPago metodoPago, Double precioOriginal, Double precioFinal,Integer descuento,EstadoCompra estadoCompra) {
         this.idUsuario = idUsuario;
         this.idJuego = idJuego;
         this.fechaC = fechaC;
@@ -25,6 +28,12 @@ public class CompraForm {
         this.precioOriginal = precioOriginal;
         this.precioFinal = precioFinal;
         this.descuento = descuento;
+        this.estadoCompra = estadoCompra;
+
+    }
+
+    public EstadoCompra getEstadoCompra() {
+        return estadoCompra;
     }
 
     public Integer getDescuento() {
@@ -43,7 +52,7 @@ public class CompraForm {
         return fechaC;
     }
 
-    public String getMetodoPago() {
+    public MetodoPago getMetodoPago() {
         return metodoPago;
     }
 
@@ -66,7 +75,7 @@ public class CompraForm {
             errores.add(new ErrorDTO("id Juego", ErrorTipo.REQUERIDO));
         }
 
-        if(metodoPago == null || metodoPago.isBlank()){
+        if(metodoPago == null ){
             errores.add(new ErrorDTO("método pago", ErrorTipo.REQUERIDO));
         }
 
