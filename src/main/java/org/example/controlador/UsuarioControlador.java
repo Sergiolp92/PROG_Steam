@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class UsuarioControlador  {
+public class UsuarioControlador {
 
     private final IUsuarioRepo usuarioRepo;
 
@@ -45,8 +45,6 @@ public class UsuarioControlador  {
         var usuario = usuarioC.orElse(null);
 
         return Optional.ofNullable(Mapper.mapFromUsuario(usuario));
-
-
 
 
     }
@@ -82,38 +80,30 @@ public class UsuarioControlador  {
     */
 
 
-    public void aniadirSaldo(long id, Double cantidad) throws ValidationException {
+    public UsuarioDTO aniadirSaldo(long id, Double cantidad) throws ValidationException {
         List<ErrorDTO> errores = new ArrayList<>();
 
         var usuarioOpt = usuarioRepo.leerPorId(id);
-        var usuario = usuarioOpt.orElse(null);
+        var usuario = usuarioOpt.orElseThrow(() -> new ValidationException(List.of(new ErrorDTO("Usuario", ErrorTipo.REQUERIDO))));
 
-        if(usuario == null){
-            errores.add(new ErrorDTO("Usuario", ErrorTipo.REQUERIDO));
-            throw new ValidationException(errores);}
-
-
-        if(usuario.getEstadoCuenta() != EstadoCuenta.ACTIVA){
+        if (usuario.getEstadoCuenta() != EstadoCuenta.ACTIVA) {
             errores.add((new ErrorDTO("Cuenta", ErrorTipo.CUENTA)));
-             }
-
-        if(cantidad < 5.00 || cantidad > 500.00){
-        errores.add(new ErrorDTO("Saldo", ErrorTipo.FUERA_DE_RANGO));
         }
 
-        if (!errores.isEmpty()){
+        if (cantidad < 5.00 || cantidad > 500.00) {
+            errores.add(new ErrorDTO("Saldo", ErrorTipo.FUERA_DE_RANGO));
+        }
+
+        if (!errores.isEmpty()) {
             throw new ValidationException(errores);
         }
 
         double saldoNuevo = usuario.getSaldo() + cantidad;
 
-        usuarioRepo.actualizar(id,new UsuarioForm(usuario.getNombreUsuario(),usuario.getEmail(),usuario.getContrasenia(),usuario.getNombreRealU(),
-                usuario.getPais(),saldoNuevo,usuario.getFechaN(),usuario.getFechaRegis(),usuario.getAvatar());))
+        var u = usuarioRepo.actualizar(id, new UsuarioForm(usuario.getNombreUsuario(), usuario.getEmail(), usuario.getContrasenia(), usuario.getNombreRealU(),
+                usuario.getPais(), saldoNuevo, usuario.getFechaN(), usuario.getFechaRegis(), usuario.getAvatar()));
 
-
-
-
-
+        return u.map(Mapper::mapFromUsuario).orElse(null);
     }
 /*Consultar saldo
 
@@ -123,17 +113,12 @@ public class UsuarioControlador  {
     Validaciones: Usuario debe existir en el sistema*/
 
 
-    public Optional<UsuarioDTO> consultarSaldo(long id) throws ValidationException {
-        return Optional.empty();
+    public Double consultarSaldo(long id) throws ValidationException {
+        List<ErrorDTO> errores = new ArrayList<>();
+
+        var usuarioOpt = usuarioRepo.leerPorId(id);
+        var usuario = usuarioOpt.orElseThrow(() -> new ValidationException(List.of(new ErrorDTO("Usuario", ErrorTipo.NO_ENCONTRADO))));
+        return usuario.getSaldo();
     }
-
-
-
-
-
-
-
-
-
 
 }
