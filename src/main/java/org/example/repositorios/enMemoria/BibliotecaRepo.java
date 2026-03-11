@@ -28,7 +28,7 @@ public class BibliotecaRepo implements IBibliotecaRepo {
     @Override
     public Optional<BibliotecaEntidad> leerPorId(Long id) {
         return bibliotecas.stream()
-                .filter(b -> b.getIdBiblio().equals(id))
+                .filter(b -> id.equals(b.getIdBiblio()))
                 .findFirst();
 
     }

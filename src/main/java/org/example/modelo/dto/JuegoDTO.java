@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 public class JuegoDTO {
 
-    private int idJuego;
+    private Long idJuego;
     private String titulo;
     private String descripcion;
     private String desarrollador;
@@ -19,7 +19,7 @@ public class JuegoDTO {
     private String idioma;
     private EstadoJuego estadoJuego;
 
-    public JuegoDTO(int idJuego, String titulo, String descripcion, String desarrollador, LocalDate fechaLanz, double precioB, int descuento, String categoria, ClasificacionEdad clasificacionEdad, String idioma, EstadoJuego estadoJuego) {
+    public JuegoDTO(Long idJuego, String titulo, String descripcion, String desarrollador, LocalDate fechaLanz, double precioB, int descuento, String categoria, ClasificacionEdad clasificacionEdad, String idioma, EstadoJuego estadoJuego) {
         this.idJuego = idJuego;
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -33,7 +33,7 @@ public class JuegoDTO {
         this.estadoJuego = estadoJuego.DISPONIBLE;
     }
 
-    public int getIdJuego() {
+    public Long getIdJuego() {
         return idJuego;
     }
 

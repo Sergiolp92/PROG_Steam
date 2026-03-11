@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 public class UsuarioDTO {
 
-    private int id;
+    private Long id;
     private String nick;
     private String email;
     private String nombre;
@@ -18,7 +18,7 @@ public class UsuarioDTO {
     private double saldo;
     private EstadoCuenta estadoCuenta;
 
-    public UsuarioDTO(int id, String nick, String email, String nombre, PaisesPermitidos pais, LocalDate fechaN, LocalDate fechaRegis, String avatar, double saldo, EstadoCuenta estadoCuenta) {
+    public UsuarioDTO(Long id, String nick, String email, String nombre, PaisesPermitidos pais, LocalDate fechaN, LocalDate fechaRegis, String avatar, double saldo, EstadoCuenta estadoCuenta) {
         this.id = id;
         this.nick = nick;
         this.email = email;
@@ -32,7 +32,7 @@ public class UsuarioDTO {
     }
 
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 

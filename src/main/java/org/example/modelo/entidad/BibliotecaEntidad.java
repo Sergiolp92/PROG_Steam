@@ -10,11 +10,11 @@ public class BibliotecaEntidad {
     private Long idUsuario;
     private Long idJuego;
     private LocalDate fechaAdquisicion;
-    private Double tiempoTotalJugado;
+    private Long tiempoTotalJugado;
     private LocalDate ultimaFechaJuego;
     private EstadoInstalacion estadoInstalacion;
 
-    public BibliotecaEntidad(Long idBiblio, Long idUsuario, Long idJuego, LocalDate fechaAdquisicion, Double tiempoTotalJugado) {
+    public BibliotecaEntidad(Long idBiblio, Long idUsuario, Long idJuego, LocalDate fechaAdquisicion, Long tiempoTotalJugado) {
         this.idBiblio = idBiblio;
         this.idUsuario = idUsuario;
         this.idJuego = idJuego;
@@ -55,7 +55,7 @@ public class BibliotecaEntidad {
 
 
 
-    public Double getTiempoTotalJugado() {
+    public Long getTiempoTotalJugado() {
         return tiempoTotalJugado;
     }
 

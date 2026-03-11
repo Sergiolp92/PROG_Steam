@@ -7,17 +7,17 @@ import java.util.Optional;
 
 public class BibliotecaDTO {
 
-    private int idBiblio;
-    private int idUsuario;
+    private Long idBiblio;
+    private Long idUsuario;
     private UsuarioDTO usuario;
-    private int idJuego;
+    private Long idJuego;
     private JuegoDTO juego;
     private LocalDate fechaAdquisicion;
-    private int tiempoTotalJugado;
+    private Long tiempoTotalJugado;
     private LocalDate ultimaFechaJuego;
     private EstadoInstalacion estadoInstalacion;
 
-    public BibliotecaDTO(int idBiblio, int idUsuario, UsuarioDTO usuario, int idJuego, JuegoDTO juego, LocalDate fechaAdquisicion, int tiempoTotalJugado, LocalDate ultimaFechaJuego, EstadoInstalacion estadoInstalacion) {
+    public BibliotecaDTO(Long idBiblio, Long idUsuario, UsuarioDTO usuario, Long idJuego, JuegoDTO juego, LocalDate fechaAdquisicion, Long tiempoTotalJugado, LocalDate ultimaFechaJuego, EstadoInstalacion estadoInstalacion) {
         this.idBiblio = idBiblio;
         this.idUsuario = idUsuario;
         this.usuario = usuario;
@@ -29,13 +29,13 @@ public class BibliotecaDTO {
         this.estadoInstalacion = estadoInstalacion.NO_INSTALADO;
     }
 
-    public int getIdBiblio() {
+    public Long getIdBiblio() {
         return idBiblio;
     }
 
 
 
-    public int getIdUsuario() {
+    public Long getIdUsuario() {
         return idUsuario;
     }
 
@@ -47,7 +47,7 @@ public class BibliotecaDTO {
 
 
 
-    public int getIdJuego() {
+    public Long getIdJuego() {
         return idJuego;
     }
 
@@ -65,7 +65,7 @@ public class BibliotecaDTO {
 
 
 
-    public int getTiempoTotalJugado() {
+    public Long getTiempoTotalJugado() {
         return tiempoTotalJugado;
     }
 

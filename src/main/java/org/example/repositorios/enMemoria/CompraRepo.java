@@ -13,15 +13,14 @@ public class CompraRepo implements ICompraRepo {
 
 
     private static List<CompraEntidad> compras = new ArrayList<>();
-    private static long idContador = (Long) 1L;
+    private static Long idContador = 1L;
 
     @Override
     public void crear(CompraForm form) {
-        idContador = idContador +1L;
+        Long id = idContador +1L;
 
-        var compra = new CompraEntidad((Long)idContador,form.getFechaC(),form.getMetodoPago(),form.getPrecioOriginal(), form.getPrecioFinal(),
-                form.getEstadoCompra());
-
+        var compra = new CompraEntidad(id,form.getFechaC(),form.getMetodoPago(),form.getPrecioOriginal(),
+                form.getPrecioFinal(), form.getEstadoCompra());
         compras.add(compra);
 
     }
@@ -29,7 +28,7 @@ public class CompraRepo implements ICompraRepo {
     @Override
     public Optional<CompraEntidad> leerPorId(Long id) {
         return compras.stream()
-                .filter(c -> c.getIdCompra().equals(id))
+                .filter(c -> id.equals(c.getIdCompra()))
                 .findFirst();
     }
 
@@ -51,8 +50,8 @@ public class CompraRepo implements ICompraRepo {
             throw new IllegalArgumentException("Compra no encontrada");
         }
 
-        var compraActualizada = new CompraEntidad((Long)idContador,form.getFechaC(),form.getMetodoPago(),form.getPrecioOriginal(), form.getPrecioFinal(),
-                form.getEstadoCompra());
+        var compraActualizada = new CompraEntidad(id,form.getFechaC(),form.getMetodoPago(),form.getPrecioOriginal(),
+                form.getPrecioFinal(), form.getEstadoCompra());
         compras.removeIf(c ->id.equals(c.getIdCompra()));
         compras.add(compraActualizada);
 

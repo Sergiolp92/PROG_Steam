@@ -10,8 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JuegoForm {
-
-    public String categoria;
+    
     private String titulo;
     private String desarrollador;
     private LocalDate fechaL;
@@ -19,13 +18,11 @@ public class JuegoForm {
     private ClasificacionEdad clasiEdad;
     private String descripcion;
     private Integer descuento;
-
-
+    private String categoria;
+    private String idioma;
     private EstadoJuego estadoJuego;
 
-    private String idioma;
-
-    public JuegoForm(String titulo, String desarrollador, LocalDate fechaL, Double precioB, ClasificacionEdad clasiEdad,String descripcion,Integer descuentoActual, String categoria,String idioma,EstadoJuego estadoJuego) {
+    public JuegoForm(String titulo, String desarrollador, LocalDate fechaL, Double precioB, ClasificacionEdad clasiEdad,String descripcion,Integer descuentoActual,String categoria, String idioma, EstadoJuego estadoJuego) {
         this.titulo = titulo;
         this.desarrollador = desarrollador;
         this.fechaL = fechaL;
@@ -35,7 +32,9 @@ public class JuegoForm {
         this.descuento = descuento;
         this.categoria = categoria;
         this.idioma = idioma;
+        this.estadoJuego = estadoJuego;
     }
+
     public EstadoJuego getEstadoJuego() {
         return estadoJuego;
     }
@@ -60,7 +59,7 @@ public class JuegoForm {
         return precioB;
     }
 
-    public ClasificacionEdad getClasiEdad() {
+    public ClasificacionEdad  getClasiEdad() {
         return clasiEdad;
     }
 
@@ -103,15 +102,10 @@ public class JuegoForm {
         }
 
 
-        if (precioB == null || precioB.isBlank()) {
+        if (precioB == null) {
             errores.add(new ErrorDTO("precio", ErrorTipo.REQUERIDO));
-        } else if (!precioB.matches(regex)) {
+        } else if (precioB < 0 || precioB > 999.99) {
             errores.add(new ErrorDTO("precio", ErrorTipo.FORMATO_INVALIDO));
-        } else {
-            double precio = Double.parseDouble(precioB);
-            if (precio < 0 || precio > 999.99) {
-                errores.add(new ErrorDTO("precio", ErrorTipo.FORMATO_INVALIDO));
-            }
         }
 
         if (descuento != null) {

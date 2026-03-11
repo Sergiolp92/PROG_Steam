@@ -1,6 +1,5 @@
 package org.example.repositorios.enMemoria;
 
-import org.example.enumerados.ClasificacionEdad;
 import org.example.modelo.entidad.JuegoEntidad;
 import org.example.modelo.entidad.UsuarioEntidad;
 import org.example.modelo.form.JuegoForm;
@@ -14,15 +13,15 @@ import java.util.Optional;
 public class JuegosRepo implements IJuegosRepo {
 
     private static List<JuegoEntidad> juegos = new ArrayList<>();
-    private static long idContador = (Long) 1L;
+    private static Long idContador = 1L;
 
     @Override
     public void crear(JuegoForm form) {
-        idContador  = idContador +1L;
+        Long id = idContador +1L;
 
-        var juego = new JuegoEntidad((Long)idContador, form.getTitulo(), form.getDescripcion(), form.getDesarrollador(),
-                form.getFechaL(), form.getPrecioB(), form.getDescuento(), form.getCategoria(),form.getClasiEdad() ,
-                form.getIdioma(), form.getEstadoJuego());
+        var juego = new JuegoEntidad(id, form.getTitulo(), form.getDescripcion(), form.getDesarrollador(), form.getFechaL(),
+                form.getPrecioB(),form.getDescuento(),form.getCategoria(), form.getClasiEdad(), form.getIdioma(), form.getEstadoJuego());
+
         juegos.add(juego);
 
     }
@@ -30,7 +29,7 @@ public class JuegosRepo implements IJuegosRepo {
     @Override
     public Optional<JuegoEntidad> leerPorId(Long id) {
         return juegos.stream()
-                .filter(j -> j.getIdJuego().equals(id))
+                .filter(j -> id.equals(j.getIdJuego()))
                 .findFirst();
     }
 
@@ -55,9 +54,9 @@ public class JuegosRepo implements IJuegosRepo {
             throw new IllegalArgumentException("Juego no encontrado");
         }
 
-        var juegoActualizado = new JuegoEntidad((Long)idContador, form.getTitulo(), form.getDescripcion(), form.getDesarrollador(),
-                form.getFechaL(), form.getPrecioB(), form.getDescuento(), form.getCategoria(),form.getClasiEdad() ,
-                form.getIdioma(), form.getEstadoJuego());
+        var juegoActualizado = new JuegoEntidad(id, form.getTitulo(), form.getDescripcion(), form.getDesarrollador(), form.getFechaL(),
+                form.getPrecioB(),form.getDescuento(),form.getCategoria(), form.getClasiEdad(), form.getIdioma(), form.getEstadoJuego());
+        juegos.removeIf(j ->id.equals(j.getIdJuego()));
         juegos.add(juegoActualizado);
 
         return Optional.of(juegoActualizado);
