@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface IJuegosRepo {
 
    //crear
-    void crear(JuegoForm form);
+   Optional<JuegoEntidad> crear(JuegoForm form);
 
     //leer
     Optional<JuegoEntidad> leerPorId(Long id);

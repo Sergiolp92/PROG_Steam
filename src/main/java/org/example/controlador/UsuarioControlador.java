@@ -3,19 +3,21 @@ package org.example.controlador;
 
 import org.example.enumerados.ErrorTipo;
 import org.example.enumerados.EstadoCuenta;
+import org.example.enumerados.PaisesPermitidos;
 import org.example.excepciones.ValidationException;
 import org.example.mapper.Mapper;
 import org.example.modelo.dto.ErrorDTO;
 import org.example.modelo.dto.UsuarioDTO;
-import org.example.modelo.entidad.UsuarioEntidad;
 import org.example.modelo.form.UsuarioForm;
+import org.example.repositorios.enMemoria.UsuariosRepo;
 import org.example.repositorios.interfaz.IUsuarioRepo;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class UsuarioControlador  {
+public class UsuarioControlador {
 
     private final IUsuarioRepo usuarioRepo;
 
@@ -45,8 +47,6 @@ public class UsuarioControlador  {
         var usuario = usuarioC.orElse(null);
 
         return Optional.ofNullable(Mapper.mapFromUsuario(usuario));
-
-
 
 
     }
@@ -82,38 +82,40 @@ public class UsuarioControlador  {
     */
 
 
-    public void aniadirSaldo(long id, Double cantidad) throws ValidationException {
+    public Optional<UsuarioDTO> aniadirSaldo(long id, float cantidad) throws ValidationException {
         List<ErrorDTO> errores = new ArrayList<>();
 
         var usuarioOpt = usuarioRepo.leerPorId(id);
         var usuario = usuarioOpt.orElse(null);
 
-        if(usuario == null){
+        if (usuario == null) {
             errores.add(new ErrorDTO("Usuario", ErrorTipo.REQUERIDO));
-            throw new ValidationException(errores);}
-
-
-        if(usuario.getEstadoCuenta() != EstadoCuenta.ACTIVA){
-            errores.add((new ErrorDTO("Cuenta", ErrorTipo.CUENTA)));
-             }
-
-        if(cantidad < 5.00 || cantidad > 500.00){
-        errores.add(new ErrorDTO("Saldo", ErrorTipo.FUERA_DE_RANGO));
+            throw new ValidationException(errores);
         }
 
-        if (!errores.isEmpty()){
+
+        if (usuario.getEstadoCuenta() != EstadoCuenta.ACTIVA) {
+            errores.add((new ErrorDTO("Cuenta", ErrorTipo.CUENTA)));
+        }
+
+        if (cantidad < 0.00) {
+            errores.add(new ErrorDTO("Saldo", ErrorTipo.FORMATO_INVALIDO));
+        }
+
+        if (cantidad < 5.00 || cantidad > 500.00) {
+            errores.add(new ErrorDTO("Saldo", ErrorTipo.FUERA_DE_RANGO));
+        }
+
+        if (!errores.isEmpty()) {
             throw new ValidationException(errores);
         }
 
         double saldoNuevo = usuario.getSaldo() + cantidad;
 
-        usuarioRepo.actualizar(id,new UsuarioForm(usuario.getNombreUsuario(),usuario.getEmail(),usuario.getContrasenia(),usuario.getNombreRealU(),
-                usuario.getPais(),saldoNuevo,usuario.getFechaN(),usuario.getFechaRegis(),usuario.getAvatar());))
+        var usuarioSaldoActualizado = usuarioRepo.actualizar(id, new UsuarioForm(usuario.getNombreUsuario(), usuario.getEmail(), usuario.getContrasenia(), usuario.getNombreRealU(),
+                usuario.getPais(), saldoNuevo, usuario.getFechaN(), usuario.getFechaRegis(), usuario.getAvatar()));
 
-
-
-
-
+        return Optional.ofNullable(Mapper.mapFromUsuario(usuarioSaldoActualizado.orElse(null)));
     }
 /*Consultar saldo
 
@@ -124,16 +126,15 @@ public class UsuarioControlador  {
 
 
     public Optional<UsuarioDTO> consultarSaldo(long id) throws ValidationException {
-        return Optional.empty();
+        List<ErrorDTO> errores = new ArrayList<>();
+        var usuarioOpt = usuarioRepo.leerPorId(id);
+        if (usuarioOpt.isEmpty()) {
+            errores.add(new ErrorDTO("id", ErrorTipo.NO_ENCONTRADO));
+            throw new ValidationException(errores);
+        }
+
+        return Optional.of(Mapper.mapFromUsuario(usuarioOpt.get()));
     }
-
-
-
-
-
-
-
-
 
 
 }

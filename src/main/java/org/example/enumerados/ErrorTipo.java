@@ -9,7 +9,8 @@ public enum ErrorTipo {
     DUPLICADO("El elemento está duplicado"),
     PAIS_NO_VALIDO("Pais no encontrado"),
     FUERA_DE_RANGO("Valor fuera de rango"),
-    CUENTA("La cuenta está bloqueada o desactivada");
+    CUENTA("La cuenta está bloqueada o desactivada"),
+    BUSQUEDA_INVALIDA("La búsqueda es inválida");
 
     private final String mensaje;
 

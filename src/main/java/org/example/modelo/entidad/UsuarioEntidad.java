@@ -91,5 +91,6 @@ public class UsuarioEntidad {
 
     public String getContrasenia() {
 
+        return "";
     }
 }

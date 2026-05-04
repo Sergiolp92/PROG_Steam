@@ -8,7 +8,6 @@ import org.example.modelo.dto.ErrorDTO;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class UsuarioForm {
 
@@ -26,14 +25,17 @@ public class UsuarioForm {
     ;
     private String avatar;
 
-    public UsuarioForm(String nombreusuario, String email, String contrasenia, String nombre, String pais,double saldo, LocalDate fechaN ,LocalDate fechaRegis, String avatar) {
+    public UsuarioForm(String nombreusuario, String email, String contrasenia, String nombre, PaisesPermitidos pais, double saldo, LocalDate fechaN , LocalDate fechaRegis, String avatar) {
         this.nombreusuario = nombreusuario;
         this.email = email;
         this.contrasenia = contrasenia;
         this.nombre = nombre;
-        this.pais = PaisesPermitidos.valueOf(pais.toUpperCase());
+        this.pais = pais;
+        this.saldo = saldo;
         this.fechaN = fechaN;
+        this.fechaRegis = fechaRegis;
         this.avatar = avatar;
+        this.estadoCuenta = EstadoCuenta.ACTIVA;
     }
 
     public LocalDate getFechaRegis() {

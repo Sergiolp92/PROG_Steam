@@ -16,13 +16,15 @@ public class JuegosRepo implements IJuegosRepo {
     private static Long idContador = 1L;
 
     @Override
-    public void crear(JuegoForm form) {
+    public Optional<JuegoEntidad> crear(JuegoForm form) {
         Long id = idContador +1L;
 
         var juego = new JuegoEntidad(id, form.getTitulo(), form.getDescripcion(), form.getDesarrollador(), form.getFechaL(),
                 form.getPrecioB(),form.getDescuento(),form.getCategoria(), form.getClasiEdad(), form.getIdioma(), form.getEstadoJuego());
 
         juegos.add(juego);
+
+        return Optional.of(juego);
 
     }
 
