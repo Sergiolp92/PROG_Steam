@@ -11,14 +11,14 @@ import java.util.Optional;
 
 public class BibliotecaRepo implements IBibliotecaRepo {
     private static List<BibliotecaEntidad> bibliotecas = new ArrayList<>();
-    private static Long idContador = 1L;
+    private static long idContador = (Long) 1L;
 
 
     @Override
     public void crear(BibliotecaForm form) {
-        Long id = idContador +1L;
+        idContador = idContador +1L;
 
-        var biblioteca = new BibliotecaEntidad(id, form.getIdUsuario(), form.getIdJuego(), form.getFechaAdquisicion(),
+        var biblioteca = new BibliotecaEntidad((Long)idContador, form.getIdUsuario(), form.getIdJuego(), form.getFechaAdquisicion(),
                 form.getTiempoDeJuego());
         bibliotecas.add(biblioteca);
 

@@ -20,7 +20,10 @@ public class JuegoEntidad {
     private EstadoJuego estadoJuego;
 
 
-    public JuegoEntidad(Long idJuego, String titulo, String descripcion, String desarrollador, LocalDate fechaLanz, double precioB, int descuento, String categoria, ClasificacionEdad clasificacionEdad, String idioma, EstadoJuego estadoJuego) {
+    public JuegoEntidad(Long idJuego, String titulo,
+                        String descripcion, String desarrollador, LocalDate fechaLanz,
+                        double precioB, int descuento, String categoria, ClasificacionEdad clasificacionEdad,
+                        String idioma, EstadoJuego estadoJuego) {
         this.idJuego = idJuego;
         this.titulo = titulo;
         this.descripcion = descripcion;
