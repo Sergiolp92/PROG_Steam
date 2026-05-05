@@ -9,16 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BusquedaJuegoForm {
-    private String titulo; // Para buscar en título o descripción
+    private String titulo;
     private String categoria;
     private Double precio;
     private ClasificacionEdad clasificacion;
     private EstadoJuego estado;
     
 
-    public BusquedaJuegoForm(String texto, String categoria, Double precio,
+    public BusquedaJuegoForm(String titulo, String categoria, Double precio,
              ClasificacionEdad clasificacion, EstadoJuego estado) {
-        this.titulo = texto; // Corregido: asignar el parámetro texto al campo titulo
+        this.titulo = titulo;
         this.categoria = categoria;
         this.precio = precio;
         this.clasificacion = clasificacion;
@@ -50,9 +50,9 @@ public class BusquedaJuegoForm {
 
         List<ErrorDTO> errores = new ArrayList<>();
 
-        if (titulo != null && titulo.isEmpty() && categoria != null && categoria.isEmpty() && 
-            precio == null && clasificacion == null && estado == null) {
+        if ((titulo == null || titulo.isEmpty()) && (categoria == null || categoria.isEmpty()) && precio == null && clasificacion == null && estado == null) {
             errores.add(new ErrorDTO("busqueda", ErrorTipo.BUSQUEDA_INVALIDA));
+
         }
         
         return errores;

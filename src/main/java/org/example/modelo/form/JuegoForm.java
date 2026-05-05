@@ -22,7 +22,7 @@ public class JuegoForm {
     private String idioma;
     private EstadoJuego estadoJuego;
 
-    public JuegoForm(String titulo, String desarrollador, LocalDate fechaL, Double precioB, ClasificacionEdad clasiEdad,String descripcion,Integer descuentoActual,String categoria, String idioma, EstadoJuego estadoJuego) {
+    public JuegoForm(String titulo, String desarrollador, LocalDate fechaL, Double precioB, ClasificacionEdad clasiEdad,String descripcion,Integer descuento,String categoria, String idioma, EstadoJuego estadoJuego) {
         this.titulo = titulo;
         this.desarrollador = desarrollador;
         this.fechaL = fechaL;

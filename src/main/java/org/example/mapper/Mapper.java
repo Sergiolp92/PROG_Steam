@@ -67,8 +67,8 @@ public class Mapper {
                 Mapper.mapFromJuego(juego),
                 entidad.getFechaDeCompra(),
                 entidad.getMetodoPago(),
-                entidad.getPrecioSinDescuento(),
-                entidad.getPrecioDescuentoAplicado(),
+                entidad.getPrecioOriginal(),
+                entidad.getPrecioFinal(),
                 entidad.getEstadoCompra());
 
     }
@@ -88,5 +88,7 @@ public class Mapper {
                 entidad.getUltimaFechaJuego(),
                 entidad.getEstadoInstalacion());
     }
+
+
 
 }

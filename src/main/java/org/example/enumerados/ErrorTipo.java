@@ -10,7 +10,8 @@ public enum ErrorTipo {
     PAIS_NO_VALIDO("Pais no encontrado"),
     FUERA_DE_RANGO("Valor fuera de rango"),
     CUENTA("La cuenta está bloqueada o desactivada"),
-    BUSQUEDA_INVALIDA("La búsqueda es inválida");
+    BUSQUEDA_INVALIDA("La búsqueda es inválida"),
+    VALOR_INVALIDO("El estado es inválido");
 
     private final String mensaje;
 

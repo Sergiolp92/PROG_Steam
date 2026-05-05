@@ -1,6 +1,8 @@
 package org.example.controlador;
 
+import org.example.enumerados.ClasificacionEdad;
 import org.example.enumerados.ErrorTipo;
+import org.example.enumerados.EstadoJuego;
 import org.example.enumerados.OrdenBusquedaJuego;
 import org.example.excepciones.ValidationException;
 import org.example.mapper.Mapper;
@@ -9,13 +11,14 @@ import org.example.modelo.dto.JuegoDTO;
 import org.example.modelo.form.BusquedaJuegoForm;
 import org.example.modelo.form.JuegoForm;
 import org.example.modelo.entidad.JuegoEntidad;
+import org.example.repositorios.enMemoria.JuegosRepo;
 import org.example.repositorios.interfaz.IJuegosRepo;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 public class JuegoControlador {
     private final IJuegosRepo juegosRepo;
@@ -73,31 +76,31 @@ public class JuegoControlador {
     }
 
     private boolean cumpleCriterios(JuegoEntidad juego, BusquedaJuegoForm criterios) {
-        // Filtrar por título
+
         if (criterios.getTitulo() != null && !criterios.getTitulo().isEmpty()) {
-
-            return false;
-
-        }
-
-        // Filtrar por categoría
-        if (criterios.getCategoria() != null && !criterios.getCategoria().isEmpty()) {
-
+            if (!juego.getTitulo().toLowerCase().contains(criterios.getTitulo().toLowerCase())) {
                 return false;
-
+            }
         }
 
-        // Filtrar por precio
-        if (criterios.getPrecio() != null && juego.getPrecioB() <= criterios.getPrecio()) {
+
+        if (criterios.getCategoria() != null && !criterios.getCategoria().isEmpty()) {
+            if (!juego.getCategoria().toLowerCase().contains(criterios.getCategoria().toLowerCase())) {
+                return false;
+            }
+        }
+
+
+        if (criterios.getPrecio() != null && juego.getPrecioB() > criterios.getPrecio()) {
             return false;
         }
 
-        // Filtrar por clasificación de edad
+
         if (criterios.getClasificacion() != null && !criterios.getClasificacion().equals(juego.getClasificacionEdad())) {
             return false;
         }
 
-        // Filtrar por estado del juego
+
         if (criterios.getEstado() != null && !criterios.getEstado().equals(juego.getEstadoJuego())) {
             return false;
         }
@@ -165,7 +168,37 @@ public class JuegoControlador {
     Salida: Precio final actualizado o mensaje de error
     Validaciones: Juego existe, descuento en rango válido
     */
+    public Optional<JuegoDTO> aplicarDescuento(long id, double descuento) throws ValidationException {
+        List<ErrorDTO> errores = new ArrayList<>();
 
+        var juegoOpt = juegosRepo.leerPorId(id);
+
+        if (juegoOpt.isEmpty()) {
+            errores.add(new ErrorDTO("id", ErrorTipo.NO_ENCONTRADO));
+        }
+        if (descuento < 0 || descuento > 100) {
+            errores.add(new ErrorDTO("descuento", ErrorTipo.FUERA_DE_RANGO));
+        }
+        if (!errores.isEmpty()) {
+            throw new ValidationException(errores);
+        }
+
+
+        var juegoActualizado = juegosRepo.actualizar(id, new JuegoForm(
+            juegoOpt.get().getTitulo(),
+            juegoOpt.get().getDesarrollador(),
+            juegoOpt.get().getFechaLanz(),
+            juegoOpt.get().getPrecioB(),
+            juegoOpt.get().getClasificacionEdad(),
+            juegoOpt.get().getDescripcion(),
+                (int) descuento,
+            juegoOpt.get().getCategoria(),
+            juegoOpt.get().getIdioma(),
+            juegoOpt.get().getEstadoJuego()
+        ));
+
+        return Optional.ofNullable(Mapper.mapFromJuego(juegoActualizado.orElse(null)));
+    }
     /*
     Cambiar estado del juego
     Descripción: Modificar el estado de disponibilidad de un juego
@@ -173,6 +206,34 @@ public class JuegoControlador {
     Salida: Confirmación del cambio de estado o mensaje de error
     Validaciones: Juego existe, estado válido
     */
+    public Optional<JuegoDTO> cambiarEstado(long id , EstadoJuego estado) throws ValidationException{
+        List<ErrorDTO> errores = new ArrayList<>();
 
-    
+        var juegoOpt = juegosRepo.leerPorId(id);
+
+        if(juegoOpt.isEmpty()){
+            errores.add(new ErrorDTO("id", ErrorTipo.NO_ENCONTRADO));
+        }
+        if(estado == null) {
+            errores.add(new ErrorDTO("estado", ErrorTipo.VALOR_INVALIDO));
+        }
+        if (!errores.isEmpty()) {
+            throw new ValidationException(errores);
+        }
+
+        var juegoActualizado = juegosRepo.actualizar(id, new JuegoForm(
+                juegoOpt.get().getTitulo(),
+                juegoOpt.get().getDesarrollador(),
+                juegoOpt.get().getFechaLanz(),
+                juegoOpt.get().getPrecioB(),
+                juegoOpt.get().getClasificacionEdad(),
+                juegoOpt.get().getDescripcion(),
+                juegoOpt.get().getDescuento(),
+                juegoOpt.get().getCategoria(),
+                juegoOpt.get().getIdioma(),
+                estado));
+        return Optional.ofNullable(Mapper.mapFromJuego(juegoActualizado.orElse(null)));
+    }
+
+
 }

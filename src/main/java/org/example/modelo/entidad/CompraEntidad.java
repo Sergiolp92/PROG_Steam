@@ -43,13 +43,13 @@ public class CompraEntidad {
 
 
 
-    public double precioOriginal() {
+    public double getPrecioOriginal() {
         return precioOriginal;
     }
 
 
 
-    public double precioFinal() {
+    public double getPrecioFinal() {
         return precioFinal;
     }
 
