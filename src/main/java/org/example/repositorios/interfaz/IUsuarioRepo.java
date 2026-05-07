@@ -19,6 +19,8 @@ public interface IUsuarioRepo  {
 
 
     //actualizar
+    void sumarSaldo(Long idUsuario, Double precioJuego) ;
+    void restarSaldo(Long idUsuario, Double precioJuego);
     Optional<UsuarioEntidad> actualizar(Long id, UsuarioForm form);
 
     //borrar

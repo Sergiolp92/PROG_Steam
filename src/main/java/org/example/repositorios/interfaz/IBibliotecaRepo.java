@@ -17,7 +17,7 @@ public interface IBibliotecaRepo  {
     Optional<BibliotecaEntidad> leerPorId(Long id);
     Optional<BibliotecaEntidad> leerPorNombre(String nombre);
     List<BibliotecaEntidad> leerTodo();
-
+    Optional<BibliotecaEntidad> leerJuegoUsuario(Long idJuego, Long idUsuario);
 
     //actualizar
     Optional<BibliotecaEntidad> actualizar(Long id, BibliotecaForm form);

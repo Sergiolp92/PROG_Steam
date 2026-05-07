@@ -12,7 +12,7 @@ public interface ICompraRepo {
 
 
     //crear
-    void crear(CompraForm form);
+    Optional<CompraEntidad> crear(CompraForm form);
 
     //leer
     Optional<CompraEntidad> leerPorId(Long id);

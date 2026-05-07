@@ -80,9 +80,9 @@ public class CompraForm {
         }
 
         if (precioOriginal == null || precioOriginal <0){
-            errores.add(new ErrorDTO("Tiempo de juego",ErrorTipo.FORMATO_INVALIDO));
+            errores.add(new ErrorDTO("Compra",ErrorTipo.FORMATO_INVALIDO));
         } else if (Math.round(precioOriginal * 10) != precioOriginal * 10) {
-            errores.add(new ErrorDTO("Tiempo de juego", ErrorTipo.FORMATO_INVALIDO));
+            errores.add(new ErrorDTO("Compra", ErrorTipo.FORMATO_INVALIDO));
         }
 
         if (descuento != null ){

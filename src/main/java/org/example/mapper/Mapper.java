@@ -57,14 +57,14 @@ public class Mapper {
 
     }
 
-    public static CompraDTO mapFromCompra(CompraEntidad entidad,UsuarioEntidad usuario, JuegoEntidad juego){
+    public static CompraDTO mapFromCompra(CompraEntidad entidad,UsuarioDTO usuario, JuegoDTO juego){
         if (entidad == null)
             return null;
 
         return new CompraDTO(
                 entidad.getIdCompra(),
-                Mapper.mapFromUsuario(usuario),
-                Mapper.mapFromJuego(juego),
+                (usuario),
+                (juego),
                 entidad.getFechaDeCompra(),
                 entidad.getMetodoPago(),
                 entidad.getPrecioOriginal(),
@@ -72,7 +72,7 @@ public class Mapper {
                 entidad.getEstadoCompra());
 
     }
-    public static BibliotecaDTO mapFromBiblioteca (BibliotecaEntidad entidad,UsuarioEntidad usuario, JuegoEntidad juego) {
+    public static BibliotecaDTO mapFromBiblioteca (BibliotecaEntidad entidad,UsuarioDTO usuario, JuegoDTO juego) {
 
         if (entidad == null)
             return null;
@@ -80,9 +80,9 @@ public class Mapper {
         return new BibliotecaDTO(
                 entidad.getIdBiblio(),
                 entidad.getIdUsuario(),
-                Mapper.mapFromUsuario(usuario),
+                (usuario),
                 entidad.getIdJuego(),
-                Mapper.mapFromJuego(juego),
+                (juego),
                 entidad.getFechaAdquisicion(),
                 entidad.getTiempoTotalJugado(),
                 entidad.getUltimaFechaJuego(),

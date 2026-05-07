@@ -13,10 +13,10 @@ public class BibliotecaForm {
     private Long idUsuario;
     private Long idJuego;
     private LocalDate fechaAdquisicion;
-    private Long tiempoDeJuego;
+    private float tiempoDeJuego;
     private LocalDate ultimaVezJugada;
 
-    public BibliotecaForm(Long idUsuario, Long idJuego, LocalDate fechaAdquisicion,Long tiempoDeJuego,LocalDate ultimaVezJugada) {
+    public BibliotecaForm(Long idUsuario, Long idJuego, LocalDate fechaAdquisicion,float tiempoDeJuego,LocalDate ultimaVezJugada) {
         this.idUsuario = idUsuario;
         this.idJuego = idJuego;
         this.fechaAdquisicion = fechaAdquisicion;
@@ -36,7 +36,7 @@ public class BibliotecaForm {
         return fechaAdquisicion;
     }
 
-    public Long getTiempoDeJuego() {
+    public float getTiempoDeJuego() {
         return tiempoDeJuego;
     }
 
@@ -55,7 +55,7 @@ public class BibliotecaForm {
             errores.add(new ErrorDTO("id usuario",ErrorTipo.REQUERIDO));
         }
 
-        if (tiempoDeJuego != null && tiempoDeJuego <0){
+        if (tiempoDeJuego  <0){
             errores.add(new ErrorDTO("Tiempo de juego",ErrorTipo.FORMATO_INVALIDO));
         } else if (Math.round(tiempoDeJuego * 10) != tiempoDeJuego * 10) {
             errores.add(new ErrorDTO("Tiempo de juego", ErrorTipo.FORMATO_INVALIDO));

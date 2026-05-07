@@ -45,7 +45,7 @@ public class JuegoControlador {
 
         juegosRepo.crear(juegoForm);
 
-        // Después de crear, buscar el juego por nombre para devolverlo
+
         var juegoCreado = juegosRepo.leerPorNombre(juegoForm.getTitulo());
 
         return juegoCreado.map(Mapper::mapFromJuego);
@@ -121,7 +121,7 @@ public class JuegoControlador {
     public List<JuegoDTO> consultarTodoCatalogo(String filtro) {
         List<JuegoEntidad> juegos = juegosRepo.leerTodo();
 
-        //ordenar
+
         if (filtro.equals(OrdenBusquedaJuego.ALFABETICO)){
         juegos.
                 stream().sorted(Comparator.comparing(JuegoEntidad::getTitulo));

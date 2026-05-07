@@ -11,7 +11,11 @@ public enum ErrorTipo {
     FUERA_DE_RANGO("Valor fuera de rango"),
     CUENTA("La cuenta está bloqueada o desactivada"),
     BUSQUEDA_INVALIDA("La búsqueda es inválida"),
-    VALOR_INVALIDO("El estado es inválido");
+    VALOR_INVALIDO("El valor es inválido"),
+    JUEGO_NO_DISPONIBLE("El juego no está disponible para compra"),
+    SALDO_INSUFICIENTE("El saldo es insuficiente para realizar la compra"),
+    COMPRA_REALIZADA("La compra ya ha sido realizada");
+
 
     private final String mensaje;
 

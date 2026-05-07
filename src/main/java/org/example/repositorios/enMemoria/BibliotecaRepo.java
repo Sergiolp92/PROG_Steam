@@ -65,4 +65,8 @@ public class BibliotecaRepo implements IBibliotecaRepo {
         return bibliotecas.removeIf(b ->id.equals(b.getIdBiblio()));
 
     }
+    public Optional<BibliotecaEntidad> leerJuegoUsuario(Long idJuego, Long idUsuario) {
+        return bibliotecas.stream().filter( b -> b.getIdUsuario().equals(idUsuario) )
+                .findFirst().filter(b -> b.getIdJuego().equals(idJuego)).stream().findFirst();
+    }
 }

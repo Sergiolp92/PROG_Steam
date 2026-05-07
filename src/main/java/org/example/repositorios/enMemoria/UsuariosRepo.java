@@ -15,7 +15,7 @@ public class UsuariosRepo implements IUsuarioRepo {
 
     @Override
     public Optional<UsuarioEntidad> crear(UsuarioForm form) {
-        Long id = idContador +1L;
+        Long id = ++idContador;
 
             var usuario = new UsuarioEntidad(id, form.getnombreusuario(), form.getEmail(), form.getNombre(), form.getPais(), form.getFechaN(),form.getFechaRegis(),
                     form.getAvatar(), form.getSaldo(),form.getEstadoCuenta());
@@ -40,10 +40,33 @@ public class UsuariosRepo implements IUsuarioRepo {
     }
 
 
-    @Override
+
     public List<UsuarioEntidad> leerTodo() {
         return new ArrayList<>(usuarios);
     }
+
+
+    public void sumarSaldo(Long idUsuario, Double precioJuego) {
+        Optional<UsuarioEntidad> usuarioOpt = leerPorId(idUsuario);
+        UsuarioEntidad usuario = usuarioOpt.orElse(null);
+        double nuevoSaldo = usuario.getSaldo() + precioJuego;
+
+        UsuarioForm form = new UsuarioForm(usuario.getNombreUsuario(), usuario.getEmail(), usuario.getContrasenia(), usuario.getNombreRealU(),
+                usuario.getPais(),nuevoSaldo, usuario.getFechaN(), usuario.getFechaRegis(), usuario.getAvatar() );
+        actualizar(idUsuario, form);
+    }
+    public void restarSaldo(Long idUsuario, Double precioJuego) {
+        Optional<UsuarioEntidad> usuarioOpt = leerPorId(idUsuario);
+        UsuarioEntidad usuario = usuarioOpt.orElse(null);
+        double nuevoSaldo = usuario.getSaldo() - precioJuego;
+
+        UsuarioForm form = new UsuarioForm(usuario.getNombreUsuario(), usuario.getEmail(), usuario.getContrasenia(), usuario.getNombreRealU(),
+                usuario.getPais(),nuevoSaldo, usuario.getFechaN(), usuario.getFechaRegis(), usuario.getAvatar() );
+        actualizar(idUsuario, form);
+    }
+
+
+
 
     public Optional<UsuarioEntidad> actualizar(Long id, UsuarioForm form) {
         var usuarioOpt = leerPorId(id);

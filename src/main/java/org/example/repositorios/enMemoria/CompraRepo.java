@@ -16,13 +16,13 @@ public class CompraRepo implements ICompraRepo {
     private static Long idContador = 1L;
 
     @Override
-    public void crear(CompraForm form) {
+    public Optional<CompraEntidad> crear(CompraForm form) {
         Long id = idContador +1L;
 
-        var compra = new CompraEntidad(id,form.getFechaC(),form.getMetodoPago(),form.getPrecioOriginal(),
+        var compra = new CompraEntidad(id, form.getIdUsuario(),form.getIdJuego(), form.getFechaC(),form.getMetodoPago(),form.getPrecioOriginal(),
                 form.getPrecioFinal(), form.getEstadoCompra());
         compras.add(compra);
-
+        return Optional.of(compra);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class CompraRepo implements ICompraRepo {
             throw new IllegalArgumentException("Compra no encontrada");
         }
 
-        var compraActualizada = new CompraEntidad(id,form.getFechaC(),form.getMetodoPago(),form.getPrecioOriginal(),
+        var compraActualizada = new CompraEntidad(id,form.getIdUsuario(),form.getIdJuego(),form.getFechaC(),form.getMetodoPago(),form.getPrecioOriginal(),
                 form.getPrecioFinal(), form.getEstadoCompra());
         compras.removeIf(c ->id.equals(c.getIdCompra()));
         compras.add(compraActualizada);

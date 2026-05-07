@@ -3,7 +3,6 @@ package org.example.modelo.dto;
 import org.example.enumerados.EstadoInstalacion;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 public class BibliotecaDTO {
 
@@ -13,11 +12,11 @@ public class BibliotecaDTO {
     private Long idJuego;
     private JuegoDTO juego;
     private LocalDate fechaAdquisicion;
-    private Long tiempoTotalJugado;
+    private float tiempoTotalJugado;
     private LocalDate ultimaFechaJuego;
     private EstadoInstalacion estadoInstalacion;
 
-    public BibliotecaDTO(Long idBiblio, Long idUsuario, UsuarioDTO usuario, Long idJuego, JuegoDTO juego, LocalDate fechaAdquisicion, Long tiempoTotalJugado, LocalDate ultimaFechaJuego, EstadoInstalacion estadoInstalacion) {
+    public BibliotecaDTO(Long idBiblio, Long idUsuario, UsuarioDTO usuario, Long idJuego, JuegoDTO juego, LocalDate fechaAdquisicion, float tiempoTotalJugado, LocalDate ultimaFechaJuego, EstadoInstalacion estadoInstalacion) {
         this.idBiblio = idBiblio;
         this.idUsuario = idUsuario;
         this.usuario = usuario;
@@ -65,7 +64,7 @@ public class BibliotecaDTO {
 
 
 
-    public Long getTiempoTotalJugado() {
+    public float getTiempoTotalJugado() {
         return tiempoTotalJugado;
     }
 
