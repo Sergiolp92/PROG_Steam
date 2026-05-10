@@ -14,7 +14,10 @@ public enum ErrorTipo {
     VALOR_INVALIDO("El valor es inválido"),
     JUEGO_NO_DISPONIBLE("El juego no está disponible para compra"),
     SALDO_INSUFICIENTE("El saldo es insuficiente para realizar la compra"),
-    COMPRA_REALIZADA("La compra ya ha sido realizada");
+    COMPRA_REALIZADA("La compra ya ha sido realizada"),
+    NO_COINCIDE("El valor no coincide con el esperado"),
+    COMPRA_NO_REALIZADA("La compra no ha sido realizada"),
+    PLAZO_VENCIDO("El plazo para reembolsar la compra ha vencido");
 
 
     private final String mensaje;

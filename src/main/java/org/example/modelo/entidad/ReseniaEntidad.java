@@ -7,6 +7,8 @@ import java.time.LocalDate;
 public class ReseniaEntidad {
 
     private Long idResenia;
+    private long usuarioId;
+    private long juegoId;
     private boolean recomendado;
     private String tResenia;
     private int horasJugadas;
@@ -15,7 +17,7 @@ public class ReseniaEntidad {
     private EstadoResenia estado;
 
 
-    public ReseniaEntidad(Long idResenia, boolean recomendado, String tResenia, int horasJugadas, LocalDate fechaPublicacionR, LocalDate fechaEdicionR, EstadoResenia estado) {
+    public ReseniaEntidad(Long idResenia,long usuarioId, long juegoId, boolean recomendado, String tResenia, int horasJugadas, LocalDate fechaPublicacionR, LocalDate fechaEdicionR, EstadoResenia estado) {
         this.idResenia = idResenia;
         this.recomendado = recomendado;
         this.tResenia = tResenia;
@@ -29,6 +31,13 @@ public class ReseniaEntidad {
         return idResenia;
     }
 
+    public long getUsuarioId() {
+        return usuarioId;
+    }
+
+    public long getJuegoId() {
+        return juegoId;
+    }
 
     public boolean isRecomendado() {
         return recomendado;

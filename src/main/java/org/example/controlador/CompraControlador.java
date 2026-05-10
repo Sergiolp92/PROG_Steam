@@ -6,15 +6,12 @@ import org.example.mapper.Mapper;
 import org.example.modelo.dto.CompraDTO;
 import org.example.modelo.dto.ErrorDTO;
 import org.example.modelo.entidad.CompraEntidad;
-import org.example.modelo.entidad.UsuarioEntidad;
 import org.example.modelo.form.BibliotecaForm;
 import org.example.modelo.form.CompraForm;
-import org.example.modelo.form.UsuarioForm;
 import org.example.repositorios.interfaz.IBibliotecaRepo;
 import org.example.repositorios.interfaz.ICompraRepo;
 import org.example.repositorios.interfaz.IJuegosRepo;
 import org.example.repositorios.interfaz.IUsuarioRepo;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -148,10 +145,74 @@ public class CompraControlador {
     Entrada: ID de compra, ID del usuario (para verificar pertenencia)
     Salida: Información detallada de la compra o compra no encontrada
     Datos mostrados: Todos los campos de compra, información del juego, factura/recibo */
+    public CompraDTO consultarDetallesCompra(long idCompra, long idUsuario) throws ValidationException {
+        List<ErrorDTO> errores = new ArrayList<>();
+        var compraOpt = compraRepo.leerPorId(idCompra);
+        if(compraOpt.isEmpty()){
+            errores.add(new ErrorDTO("compra",ErrorTipo.NO_ENCONTRADO));
+        }
+        if(compraOpt.get().getIdUsuario() != idUsuario){
+            errores.add(new ErrorDTO("usuario",ErrorTipo.NO_COINCIDE));
+        }
+        if (!errores.isEmpty()) {
+            throw new ValidationException(errores);
+        }
+        var usuarioOpt = usuarioRepo.leerPorId(compraOpt.get().getIdUsuario());
+        var juegoOpt = juegosRepo.leerPorId(compraOpt.get().getIdJuego());
+
+        return Mapper.mapFromCompra(compraOpt.orElse(null),Mapper.mapFromUsuario(usuarioOpt.orElse(null)),Mapper.mapFromJuego(juegoOpt.orElse(null)));
+    }
     /*
     Solicitar reembolso
     Descripción: Devolver una compra y reintegrar el dinero a la cartera
     Entrada: ID de compra, motivo del reembolso
     Salida: Confirmación de reembolso con nuevo saldo o mensaje de denegación
     Validaciones: Compra completada, dentro del plazo, pocas horas jugadas*/
+
+    public CompraDTO solicitarReembolso(long idCompra) throws ValidationException{
+        List<ErrorDTO> errores = new ArrayList<>();
+        var compraOpt = compraRepo.leerPorId(idCompra);
+        if(compraOpt.isEmpty()){
+            errores.add(new ErrorDTO("compra",ErrorTipo.NO_ENCONTRADO));
+        }
+        if(compraOpt.get().getEstadoCompra() != EstadoCompra.COMPLETADA){
+            errores.add(new ErrorDTO("compra",ErrorTipo.COMPRA_NO_REALIZADA));
+        }
+       if (LocalDate.now().isAfter(compraOpt.get().getFechaDeCompra().plusDays(20))) {
+            errores.add(new ErrorDTO("compra", ErrorTipo.PLAZO_VENCIDO));
+            throw new ValidationException(errores);
+        }
+
+       var bibliotecaOpt = bibliotecaRepo.leerJuegoUsuario(compraOpt.get().getIdUsuario(), compraOpt.get().getIdJuego());
+
+       if(bibliotecaOpt.get().getTiempoTotalJugado() > 2.0f){
+           errores.add(new ErrorDTO("compra", ErrorTipo.PLAZO_VENCIDO));
+           throw new ValidationException(errores);
+       }
+
+
+
+        if (!errores.isEmpty()) {
+            throw new ValidationException(errores);
+        }
+
+        double reembolso = compraOpt.get().getPrecioFinal();
+        usuarioRepo.sumarSaldo(compraOpt.get().getIdUsuario(), reembolso);
+        compraRepo.actualizar( compraOpt.get().getIdCompra(), new CompraForm(
+                compraOpt.get().getIdUsuario(),
+                compraOpt.get().getIdJuego(),
+                compraOpt.get().getFechaC(),
+                compraOpt.get().getMetodoPago(),
+                compraOpt.get().getPrecioOriginal(),
+                compraOpt.get().getPrecioFinal(),
+                (int)((compraOpt.get().getPrecioFinal()) -(compraOpt.get().getPrecioOriginal())),
+                EstadoCompra.REEMBOLSADA)
+
+        );
+        var usuarioOpt = usuarioRepo.leerPorId(compraOpt.get().getIdUsuario());
+        var juegoOpt = juegosRepo.leerPorId(compraOpt.get().getIdJuego());
+
+        return Mapper.mapFromCompra(compraOpt.orElse(null),Mapper.mapFromUsuario(usuarioOpt.orElse(null)),Mapper.mapFromJuego(juegoOpt.orElse(null)));
+
+    }
     }

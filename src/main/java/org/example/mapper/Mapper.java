@@ -22,14 +22,14 @@ public class Mapper {
 
     }
 
-    public static ReseniaDTO mapFromResenia(ReseniaEntidad entidad,UsuarioEntidad usuario, JuegoEntidad juego){
+    public static ReseniaDTO mapFromResenia(ReseniaEntidad entidad,UsuarioDTO usuario, JuegoDTO juego){
         if (entidad == null)
             return null;
 
         return new ReseniaDTO(
                 entidad.getIdResenia(),
-                Mapper.mapFromUsuario(usuario),
-                Mapper.mapFromJuego(juego),
+                usuario,
+                juego,
                 entidad.isRecomendado(),
                 entidad.gettResenia(),
                 entidad.getHorasJugadas(),

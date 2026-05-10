@@ -13,10 +13,11 @@ public class ReseniasRepo implements IReseniasRepo {
     private static List<ReseniaEntidad> resenias = new ArrayList<>();
     private static long idContador = (Long) 1l;
 
+
     @Override
     public void crear(ReseniaForm form) {
         idContador = idContador +1L;
-        var resenia = new ReseniaEntidad((Long)idContador, form.isRecomendado(), form.getTextoResenia(),form.getHorasJugadas(), form.getFechaPublicacionR(),
+        var resenia = new ReseniaEntidad((Long)idContador, form.getIdUsuario(), form.getIdJuego(),form.isRecomendado(), form.getTextoResenia(),form.getHorasJugadas(), form.getFechaPublicacionR(),
                 form.getFechaUltimaEdicion(),form.getEstadoResenia());
 
         resenias.add(resenia);
@@ -41,13 +42,19 @@ public class ReseniasRepo implements IReseniasRepo {
         return new ArrayList<>(resenias);
     }
 
+    public Optional<ReseniaEntidad> leerPorIdUsuarioYIdJuego(Long idUsuario, Long idJuego) {
+        return resenias.stream()
+                .filter(u -> idUsuario.equals(u.getUsuarioId()) && idJuego.equals(u.getJuegoId()))
+                .findFirst();
+    }
+
     public Optional<ReseniaEntidad> actualizar(Long id, ReseniaForm form) {
         var usuarioOpt = leerPorId(id);
         if (usuarioOpt.isEmpty()) {
             throw new IllegalArgumentException("Reseña no encontrada");
         }
 
-        var reseniaActualizada = new ReseniaEntidad(id, form.isRecomendado(), form.getTextoResenia(),form.getHorasJugadas(), form.getFechaPublicacionR(),
+        var reseniaActualizada = new ReseniaEntidad(id, form.getIdUsuario(), form.getIdJuego(), form.isRecomendado(), form.getTextoResenia(),form.getHorasJugadas(), form.getFechaPublicacionR(),
                 form.getFechaUltimaEdicion(),form.getEstadoResenia());
         resenias.removeIf(r ->id.equals(r.getIdResenia()));
         resenias.add(reseniaActualizada);

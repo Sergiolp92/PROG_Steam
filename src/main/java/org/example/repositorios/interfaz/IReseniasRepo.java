@@ -11,12 +11,13 @@ import java.util.Optional;
 public interface IReseniasRepo  {
 
     //crear
-    void crear(ReseniaForm form);
+    Optional<ReseniaEntidad> crear(ReseniaForm form);
 
     //leer
     Optional<ReseniaEntidad> leerPorId(Long id);
     Optional<ReseniaEntidad> leerPorNombre(String nombre);
     List<ReseniaEntidad> leerTodo();
+    Optional<ReseniaEntidad> leerPorIdUsuarioYIdJuego(Long idUsuario,  Long idJuego);
 
 
     //actualizar

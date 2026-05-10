@@ -10,22 +10,24 @@ import java.util.List;
 
 public class ReseniaForm {
 
-    public LocalDate fechaPublicacionR;
-    public int horasJugadas;
-
     private Long idUsuario;
     private Long idJuego;
     private boolean recomendado;
     private String textoResenia;
     private LocalDate fechaUltimaEdicion;
     public EstadoResenia estadoResenia;
+    public LocalDate fechaPublicacionR;
+    public int horasJugadas;
 
-    public ReseniaForm(Long idUsuario, Long idJuego, boolean recomendado, String textoResenia, LocalDate fechaUltimaEdicion) {
+    public ReseniaForm(Long idUsuario, Long idJuego, boolean recomendado, String textoResenia, LocalDate fechaUltimaEdicion, LocalDate fechaPublicacionR, int horasJugadas,EstadoResenia estadoResenia) {
         this.idUsuario = idUsuario;
         this.idJuego = idJuego;
         this.recomendado = recomendado;
         this.textoResenia = textoResenia;
         this.fechaUltimaEdicion = fechaUltimaEdicion;
+        this.estadoResenia = estadoResenia;
+        this.fechaPublicacionR = fechaPublicacionR;
+        this.horasJugadas = horasJugadas;
     }
 
     public int getHorasJugadas() {
