@@ -35,7 +35,7 @@ public class UsuarioControlador {
 
 
     public Optional<UsuarioDTO> registrarUsuario(UsuarioForm usuarioForm) throws ValidationException {
-        var errores = new ArrayList<ErrorDTO>();
+        var errores = usuarioForm.validar();
         var usuarioOpt = usuarioRepo.leerPorNombre(usuarioForm.getnombreusuario());
         if (usuarioOpt.isPresent())
             errores.add(new ErrorDTO("Usuario", ErrorTipo.DUPLICADO));

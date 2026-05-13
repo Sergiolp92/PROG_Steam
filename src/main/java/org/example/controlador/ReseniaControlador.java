@@ -61,8 +61,8 @@ public class ReseniaControlador {
             throw new ValidationException(errores);
         }
 
-        var reseniaC = repoResenia.crear(new ReseniaForm(idUsuario, idJuego, recomendado, texto, LocalDate.now(), LocalDate.now(), (int) bibliotecaOpt.get().getTiempoTotalJugado(), EstadoResenia.PUBLICADA)).orElse(null))
-        ;
+        var reseniaC = repoResenia.crear(new ReseniaForm(idUsuario, idJuego, recomendado, texto, LocalDate.now(), LocalDate.now(), (int) bibliotecaOpt.get().getTiempoTotalJugado(), EstadoResenia.PUBLICADA)).orElse(null);
+
         var usuarioOpt = repoUsuario.leerPorId(idUsuario);
         var juegoOpt = repoJuego.leerPorId(idJuego);
         return Mapper.mapFromResenia(reseniaC, Mapper.mapFromUsuario(usuarioOpt.orElse(null)), Mapper.mapFromJuego(juegoOpt.orElse(null)));

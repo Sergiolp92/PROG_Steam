@@ -11,13 +11,12 @@ import java.util.Optional;
 public class UsuariosRepo implements IUsuarioRepo {
 
     private static List<UsuarioEntidad> usuarios = new ArrayList<>();
-    private static Long idContador = 1L;
+    private static Long idContador = 0L;
 
     @Override
     public Optional<UsuarioEntidad> crear(UsuarioForm form) {
-        Long id = ++idContador;
 
-            var usuario = new UsuarioEntidad(id, form.getnombreusuario(), form.getEmail(), form.getNombre(), form.getPais(), form.getFechaN(),form.getFechaRegis(),
+            var usuario = new UsuarioEntidad(idContador++, form.getnombreusuario(), form.getEmail(), form.getNombre(), form.getPais(), form.getFechaN(),form.getFechaRegis(),
                     form.getAvatar(), form.getSaldo(),form.getEstadoCuenta());
             usuarios.add(usuario);
         return Optional.of(usuario);

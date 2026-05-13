@@ -13,13 +13,13 @@ public class CompraRepo implements ICompraRepo {
 
 
     private static List<CompraEntidad> compras = new ArrayList<>();
-    private static Long idContador = 1L;
+    private static Long idContador = 0L;
 
     @Override
     public Optional<CompraEntidad> crear(CompraForm form) {
-        Long id = idContador +1L;
 
-        var compra = new CompraEntidad(id, form.getIdUsuario(),form.getIdJuego(), form.getFechaC(),form.getMetodoPago(),form.getPrecioOriginal(),
+
+        var compra = new CompraEntidad(idContador++, form.getIdUsuario(),form.getIdJuego(), form.getFechaC(),form.getMetodoPago(),form.getPrecioOriginal(),
                 form.getPrecioFinal(), form.getEstadoCompra());
         compras.add(compra);
         return Optional.of(compra);

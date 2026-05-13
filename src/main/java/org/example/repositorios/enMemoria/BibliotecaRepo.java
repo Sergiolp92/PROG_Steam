@@ -16,9 +16,9 @@ public class BibliotecaRepo implements IBibliotecaRepo {
 
     @Override
     public void crear(BibliotecaForm form) {
-        idContador = idContador +1L;
 
-        var biblioteca = new BibliotecaEntidad((Long)idContador, form.getIdUsuario(), form.getIdJuego(), form.getFechaAdquisicion(),
+
+        var biblioteca = new BibliotecaEntidad(idContador++, form.getIdUsuario(), form.getIdJuego(), form.getFechaAdquisicion(),
                 form.getTiempoDeJuego());
         bibliotecas.add(biblioteca);
 

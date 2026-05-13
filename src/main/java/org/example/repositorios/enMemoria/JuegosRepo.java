@@ -1,11 +1,14 @@
 package org.example.repositorios.enMemoria;
 
+import org.example.enumerados.ClasificacionEdad;
+import org.example.enumerados.EstadoJuego;
 import org.example.modelo.entidad.JuegoEntidad;
 import org.example.modelo.entidad.UsuarioEntidad;
 import org.example.modelo.form.JuegoForm;
 import org.example.modelo.form.UsuarioForm;
 import org.example.repositorios.interfaz.IJuegosRepo;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -13,13 +16,12 @@ import java.util.Optional;
 public class JuegosRepo implements IJuegosRepo {
 
     private static List<JuegoEntidad> juegos = new ArrayList<>();
-    private static Long idContador = 1L;
+    private static Long idContador = 0L;
 
     @Override
     public Optional<JuegoEntidad> crear(JuegoForm form) {
-        Long id = idContador +1L;
 
-        var juego = new JuegoEntidad(id, form.getTitulo(), form.getDescripcion(), form.getDesarrollador(), form.getFechaL(),
+        var juego = new JuegoEntidad(idContador++, form.getTitulo(), form.getDescripcion(), form.getDesarrollador(), form.getFechaL(),
                 form.getPrecioB(),form.getDescuento(),form.getCategoria(), form.getClasiEdad(), form.getIdioma(), form.getEstadoJuego());
 
         juegos.add(juego);
@@ -69,6 +71,11 @@ public class JuegosRepo implements IJuegosRepo {
     public boolean borrar(Long id) {
         return juegos.removeIf(j ->id.equals(j.getIdJuego()));
 
+
+    }
+
+    public static void main(String[] args) {
+        new JuegosRepo().crear(new JuegoForm("asdad", "asdasd", LocalDate.now(), 12d, ClasificacionEdad.PEGI_7, "asdasd", 1, "asdasd", "asdasd", EstadoJuego.DISPONIBLE));
 
     }
 }
