@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface IBibliotecaRepo  {
 
     //crear
-    void crear(BibliotecaForm form);
+    Optional<BibliotecaEntidad> crear(BibliotecaForm form);
 
     //leer
     Optional<BibliotecaEntidad> leerPorId(Long id);

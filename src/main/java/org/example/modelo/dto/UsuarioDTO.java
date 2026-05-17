@@ -1,7 +1,7 @@
 package org.example.modelo.dto;
 
 import org.example.enumerados.EstadoCuenta;
-import org.example.enumerados.PaisesPermitidos;
+
 
 import java.time.LocalDate;
 
@@ -11,14 +11,14 @@ public class UsuarioDTO {
     private String nick;
     private String email;
     private String nombre;
-    private PaisesPermitidos pais;
+    private String pais;
     private LocalDate fechaN;
     private LocalDate fechaRegis;
     private String avatar;
     private double saldo;
     private EstadoCuenta estadoCuenta;
 
-    public UsuarioDTO(Long id, String nick, String email, String nombre, PaisesPermitidos pais, LocalDate fechaN, LocalDate fechaRegis, String avatar, double saldo, EstadoCuenta estadoCuenta) {
+    public UsuarioDTO(Long id, String nick, String email, String nombre, String pais, LocalDate fechaN, LocalDate fechaRegis, String avatar, double saldo, EstadoCuenta estadoCuenta) {
         this.id = id;
         this.nick = nick;
         this.email = email;
@@ -28,7 +28,7 @@ public class UsuarioDTO {
         this.fechaRegis = fechaRegis;
         this.avatar = avatar;
         this.saldo = saldo;
-        this.estadoCuenta = EstadoCuenta.ACTIVA;
+        this.estadoCuenta = estadoCuenta;
     }
 
 
@@ -48,7 +48,7 @@ public class UsuarioDTO {
         return nombre;
     }
 
-    public PaisesPermitidos getPais() {
+    public String getPais() {
         return pais;
     }
 

@@ -11,18 +11,18 @@ import java.util.Optional;
 
 public class BibliotecaRepo implements IBibliotecaRepo {
     private static List<BibliotecaEntidad> bibliotecas = new ArrayList<>();
-    private static long idContador = (Long) 1L;
+    private static long idContador = 0L;
 
 
     @Override
-    public void crear(BibliotecaForm form) {
+    public Optional<BibliotecaEntidad> crear(BibliotecaForm form) {
 
 
         var biblioteca = new BibliotecaEntidad(idContador++, form.getIdUsuario(), form.getIdJuego(), form.getFechaAdquisicion(),
                 form.getTiempoDeJuego());
         bibliotecas.add(biblioteca);
 
-
+        return Optional.of(biblioteca);
     }
 
     @Override

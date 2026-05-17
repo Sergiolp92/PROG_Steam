@@ -1,22 +1,40 @@
 package org.example.modelo.entidad;
 
+import jakarta.persistence.*;
+import org.example.HibernateUtil;
 import org.example.enumerados.ClasificacionEdad;
 import org.example.enumerados.EstadoJuego;
 
+import javax.annotation.processing.Generated;
 import java.time.LocalDate;
 
+
+@Table(name = "juegos")
+@Entity
 public class JuegoEntidad {
 
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idJuego;
+   @Column(name = "ttulo")
     private String titulo;
+   @Column(name = "descripción")
     private String descripcion;
+   @Column(name = "desarrollador")
     private String desarrollador;
+   @Column(name = "fecha_lanzamiento")
     private LocalDate fechaLanz;
+   @Column(name = "precio_base")
     private double precioB;
+   @Column(name = "descuento")
     private int descuento;
+   @Column(name = "categoría")
     private String categoria;
-    private ClasificacionEdad clasificacionEdad;
+   @Column(name = "clasificación_edad")
+   private ClasificacionEdad clasificacionEdad;
+    @Column(name = "idioma")
     private String idioma;
+    @Column(name = "estado_juego")
     private EstadoJuego estadoJuego;
 
 
@@ -98,5 +116,11 @@ public class JuegoEntidad {
 
     public EstadoJuego getEstadoJuego() {
         return estadoJuego;
+    }
+
+
+    public static void main(String[] args) {
+        var session= HibernateUtil.getSessionFactory().openSession();
+        session.close();
     }
 }

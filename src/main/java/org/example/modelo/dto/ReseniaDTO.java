@@ -25,7 +25,7 @@ public class ReseniaDTO {
         this.horasJugadas = horasJugadas;
         this.fechaPublicacionR = fechaPublicacionR;
         this.fechaEdicionR = fechaEdicionR;
-        this.estado = estado.PUBLICADA;
+        this.estado = estado;
     }
 
     public Long getIdResenia() {

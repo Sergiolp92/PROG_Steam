@@ -10,7 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JuegoForm {
-    
+
+    public static final int TITULO_MIN = 1;
+    public static final int TITULO_MAX = 100;
+    public static final int DESCRIP_MAX = 200;
+    public static final int DESA_MIN = 2;
+    public static final int DESA_MAX = 100;
+    public static final int PRECIO_MIN = 0;
+    public static final double PRECIO_MAX = 999.99;
+    public static final int IDIOMA_MAX = 200;
     private String titulo;
     private String desarrollador;
     private LocalDate fechaL;
@@ -85,29 +93,32 @@ public class JuegoForm {
 
         if (titulo == null || titulo.isBlank()){
             errores.add(new ErrorDTO("titulo", ErrorTipo.REQUERIDO));
-        }else if ((titulo.length() < 1) || (titulo.length() > 100)){
+        }else if ((titulo.length() < TITULO_MIN) || (titulo.length() > TITULO_MAX)){
             errores.add(new ErrorDTO("titulo", ErrorTipo.FORMATO_INVALIDO));
         }
 
 
-        if (descripcion != null && descripcion.length() > 200) {
+        if (descripcion != null && descripcion.length() > DESCRIP_MAX) {
             errores.add(new ErrorDTO("descripción", ErrorTipo.VALOR_DEMASIADO_ALTO));
         }
 
 
         if (desarrollador == null || titulo.isBlank()){
             errores.add(new ErrorDTO("desarrollador", ErrorTipo.REQUERIDO));
-        } else if (desarrollador.length() < 2 || desarrollador.length() > 100 ) {
+        } else if (desarrollador.length() < DESA_MIN || desarrollador.length() > DESA_MAX) {
             errores.add(new ErrorDTO("desarrollador", ErrorTipo.FORMATO_INVALIDO));
         }
 
 
         if (precioB == null) {
             errores.add(new ErrorDTO("precio", ErrorTipo.REQUERIDO));
-        } else if (precioB < 0 || precioB > 999.99) {
+        } else if (precioB < PRECIO_MIN || precioB > PRECIO_MAX) {
             errores.add(new ErrorDTO("precio", ErrorTipo.FORMATO_INVALIDO));
         }
 
+        if (fechaL == null){
+            errores.add(new ErrorDTO("fecha lanzamiento", ErrorTipo.REQUERIDO));
+        }
         if (descuento != null) {
             if (descuento < 0) {
                 errores.add(new ErrorDTO("descuento", ErrorTipo.VALOR_DEMASIADO_BAJO));
@@ -116,13 +127,21 @@ public class JuegoForm {
             }
         }
 
-        if (idioma !=null && idioma.length()>200){
-            errores.add(new ErrorDTO("idioma", ErrorTipo.FORMATO_INVALIDO));
-
+        if (idioma == null || idioma.isBlank()) {
+            errores.add(new ErrorDTO("idioma", ErrorTipo.REQUERIDO));
+        } else if (idioma.length() > IDIOMA_MAX) {
+            errores.add(new ErrorDTO("idioma", ErrorTipo.VALOR_DEMASIADO_ALTO));
         }
+
+        if(clasiEdad == null){
+            errores.add(new ErrorDTO("clasificacion edad", ErrorTipo.REQUERIDO));
+        }
+
 
         return errores;
 
 
     }
+
+
 }

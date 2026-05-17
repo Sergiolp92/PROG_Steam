@@ -1,24 +1,36 @@
 package org.example.modelo.entidad;
 
+import jakarta.persistence.*;
 import org.example.enumerados.EstadoCuenta;
-import org.example.enumerados.PaisesPermitidos;
+
 
 import java.time.LocalDate;
-
+@Table(name = "usuarios")
+@Entity
 public class UsuarioEntidad {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column (name = "nombre_usuario")
     private String nombreUsuario;
+    @Column (name = "email")
     private String email;
+    @Column (name = "nombre_real_u")
     private String nombreRealU;
-    private PaisesPermitidos pais;
+    @Column (name = "pais")
+    private String pais;
+    @Column (name = "fecha_n")
     private LocalDate fechaN;
+    @Column (name = "fecha_registro")
     private LocalDate fechaRegis;
+    @Column (name = "avatar")
     private String avatar;
+    @Column (name = "saldo")
     private Double saldo;
+    @Column (name = "estado_cuenta")
     private EstadoCuenta estadoCuenta;
 
-    public UsuarioEntidad(Long id, String nombreUsuario, String email, String nombreRealU, PaisesPermitidos pais, LocalDate fechaN, LocalDate fechaRegis, String avatar, Double saldo, EstadoCuenta estadoCuenta) {
+    public UsuarioEntidad(Long id, String nombreUsuario, String email, String nombreRealU, String pais, LocalDate fechaN, LocalDate fechaRegis, String avatar, Double saldo, EstadoCuenta estadoCuenta) {
         this.id = id;
         this.nombreUsuario = nombreUsuario;
         this.email = email;
@@ -54,7 +66,7 @@ public class UsuarioEntidad {
 
 
 
-    public PaisesPermitidos getPais() {
+    public String getPais() {
         return pais;
     }
 

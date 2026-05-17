@@ -11,8 +11,8 @@ import org.example.modelo.dto.JuegoDTO;
 import org.example.modelo.form.BusquedaJuegoForm;
 import org.example.modelo.form.JuegoForm;
 import org.example.modelo.entidad.JuegoEntidad;
-import org.example.repositorios.enMemoria.JuegosRepo;
 import org.example.repositorios.interfaz.IJuegosRepo;
+import org.example.transaction.ITransactionManager;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -21,44 +21,57 @@ import java.util.Optional;
 
 
 public class JuegoControlador {
+    public static final int DESCUENTO_MIN = 0;
+    public static final int DESCUENTO_MAX = 100;
     private final IJuegosRepo juegosRepo;
 
-    public JuegoControlador(IJuegosRepo juegosRepo) {
+    public ITransactionManager tm;
+
+    public JuegoControlador(IJuegosRepo juegosRepo, ITransactionManager tm) {
+        this.tm = tm;
         this.juegosRepo = juegosRepo;
     }
 
 
-   /* Añadir juego al catálogo
-    Descripción: Registrar un nuevo videojuego en el catálogo de Steam
-    Entrada: Datos del formulario del juego (título, descripción, desarrollador, fecha de lanzamiento,
-                                             precio base, categorías, etc.)
-    Salida: Juego creado exitosamente con su ID o lista de errores de validación
-    Validaciones: Aplicar todas las restricciones definidas en la sección de validación de Juego
-    */
+
+
+    /**
+
+     * @param juegoForm
+     * @return Juego creado exitosamente con su ID o lista de errores de validación
+     * @throws ValidationException
+     */
     public Optional<JuegoDTO> aniadirJuego(JuegoForm juegoForm) throws ValidationException {
         var errores = juegoForm.validar();
-        var juegoOpt = juegosRepo.leerPorNombre(juegoForm.getTitulo());
-        if (juegoOpt.isPresent())
-            errores.add(new ErrorDTO("titulo", ErrorTipo.DUPLICADO));
-        if (!errores.isEmpty())
+
+        var juegoCreado =tm.inTransaction(()-> {
+            var juegoOpt = juegosRepo.leerPorNombre(juegoForm.getTitulo());
+            if (juegoOpt.isPresent()){
+                errores.add(new ErrorDTO("titulo", ErrorTipo.DUPLICADO));
+            }
+            if (!errores.isEmpty()){
+                throw new IllegalArgumentException();
+            }
+
+            return juegosRepo.crear(juegoForm);
+        });
+        if (!errores.isEmpty()){
             throw new ValidationException(errores);
+        }
 
-        juegosRepo.crear(juegoForm);
-
-
-        var juegoCreado = juegosRepo.leerPorNombre(juegoForm.getTitulo());
 
         return juegoCreado.map(Mapper::mapFromJuego);
 
 
     }
-    /*
-    Buscar juegos
-    Descripción: Filtrar y buscar juegos en el catálogo según múltiples criterios
-    Entrada: Criterios de búsqueda (texto, categoría, precio, clasificación, estado)
-    Salida: Lista de juegos que cumplen los criterios con información resumida
-    Datos mostrados: ID, título, desarrollador, precio base, descuento actual, clasificación, imagen
-    */
+
+
+    /**
+     * Buscar juegos en el catálogo según los criterios especificados en el formulario de búsqueda.
+     * @param criterios
+     * @return Lista de juegos que cumplen los criterios con información resumida
+     * @throws ValidationException
+     */
     
     public List<JuegoDTO> buscarJuegos(BusquedaJuegoForm criterios) throws ValidationException {
 
@@ -67,10 +80,10 @@ public class JuegoControlador {
         if (!errores.isEmpty())
             throw new ValidationException(errores);
 
-        var juegoFiltrado = juegosRepo.leerTodo().stream()
+        var juegoFiltrado = tm.inTransaction(()-> juegosRepo.leerTodo().stream()
                 .filter(j -> cumpleCriterios(j, criterios))
                 .map(j -> Mapper.mapFromJuego(j))
-                .toList();
+                .toList());
         
         return juegoFiltrado;
     }
@@ -111,129 +124,150 @@ public class JuegoControlador {
     
     
 
-    /*
-    Consultar catálogo completo
-    Descripción: Listar todos los juegos disponibles en la plataforma
-    Entrada: orden (opcional: alfabético, precio, fecha)
-    Salida: Lista paginada de juegos con información básica y metadatos de paginación
-    Datos mostrados: Título, desarrollador, precio base, descuento actual, clasificación
-    */
+
+
+    /**
+     * Consultar catálogo completo de juegos con opción de ordenamiento
+     * @param filtro
+     * @return Lista de juegos ordenada según el filtro especificado o sin ordenamiento si el filtro es inválido
+     */
     public List<JuegoDTO> consultarTodoCatalogo(String filtro) {
-        List<JuegoEntidad> juegos = juegosRepo.leerTodo();
+        return tm.inTransaction(()-> {
+            List<JuegoEntidad> juegos = juegosRepo.leerTodo();
 
 
-        if (filtro.equals(OrdenBusquedaJuego.ALFABETICO)){
-        juegos.
-                stream().sorted(Comparator.comparing(JuegoEntidad::getTitulo));
-        return juegos.stream().map(Mapper::mapFromJuego).toList();
-        }
-        if (filtro.equals(OrdenBusquedaJuego.PRECIO)){
-            juegos.
-                    stream().sorted(Comparator.comparing(JuegoEntidad::getPrecioB));
+            if (OrdenBusquedaJuego.ALFABETICO.equals(filtro)) {
+                juegos.
+                        stream().sorted(Comparator.comparing(JuegoEntidad::getTitulo));
+                return juegos.stream().map(Mapper::mapFromJuego).toList();
+            }
+            if (OrdenBusquedaJuego.PRECIO.equals(filtro)) {
+                juegos.
+                        stream().sorted(Comparator.comparing(JuegoEntidad::getPrecioB));
+                return juegos.stream().map(Mapper::mapFromJuego).toList();
+            }
+            if (OrdenBusquedaJuego.FECHA.equals(filtro)) {
+                juegos.stream().sorted(Comparator.comparing(JuegoEntidad::getFechaLanz));
+                return juegos.stream().map(Mapper::mapFromJuego).toList();
+            }
+
             return juegos.stream().map(Mapper::mapFromJuego).toList();
-        }
-        if (filtro.equals(OrdenBusquedaJuego.FECHA)){
-            juegos.stream().sorted(Comparator.comparing(JuegoEntidad::getFechaLanz));
-            return juegos.stream().map(Mapper::mapFromJuego).toList();
-        }
-
-        return juegos.stream().map(Mapper::mapFromJuego).toList();
+        });
     }
-    /*
-    Consultar detalles de juego
-    Descripción: Mostrar toda la información completa de un juego específico
-    Entrada: ID del juego
-    Salida: Información completa del juego o mensaje de error si no existe
-    Datos mostrados: Todos los campos del juego más estadísticas y reseñas destacadas
-    */
+
+
+    /**
+     * Consultar detalles de un juego específico por su ID, mostrando toda la información completa del juego.
+     * @param id
+     * @return Información completa del juego o mensaje de error si no existe
+     * @throws ValidationException
+     */
     public Optional<JuegoDTO> consultarJuego(long id) throws ValidationException {
         List<ErrorDTO> errores = new ArrayList<>();
 
-        var juego = juegosRepo.leerPorId(id);
-        if (juego.isEmpty()) {
+        var juego = tm.inTransaction(() -> juegosRepo.leerPorId(id));
 
+        if (juego.isEmpty()) {
             errores.add(new ErrorDTO("id", ErrorTipo.NO_ENCONTRADO));
         }
 
         if (!errores.isEmpty()) {
             throw new ValidationException(errores);
         }
-
         return Optional.ofNullable(Mapper.mapFromJuego(juego.orElse(null)));
     }
-    /*
-    Aplicar descuento
-    Descripción: Establecer un porcentaje de descuento temporal a un juego
-    Entrada: ID del juego, porcentaje de descuento (0-100)
-    Salida: Precio final actualizado o mensaje de error
-    Validaciones: Juego existe, descuento en rango válido
-    */
+
+
+    /**
+     * Aplicar un descuento a un juego específico, actualizando su precio final en función del porcentaje de descuento proporcionado.
+     * @param id
+     * @param descuento
+     * @return Información del juego con el descuento aplicado o mensaje de error si el juego no existe o el descuento es inválido
+     * @throws ValidationException
+     */
     public Optional<JuegoDTO> aplicarDescuento(long id, double descuento) throws ValidationException {
         List<ErrorDTO> errores = new ArrayList<>();
 
-        var juegoOpt = juegosRepo.leerPorId(id);
-
-        if (juegoOpt.isEmpty()) {
-            errores.add(new ErrorDTO("id", ErrorTipo.NO_ENCONTRADO));
-        }
-        if (descuento < 0 || descuento > 100) {
+        if (descuento < DESCUENTO_MIN || descuento > DESCUENTO_MAX) {
             errores.add(new ErrorDTO("descuento", ErrorTipo.FUERA_DE_RANGO));
         }
+
+        var juegoActualizado = tm.inTransaction(() -> {
+            var juegoOpt = juegosRepo.leerPorId(id);
+
+            if (juegoOpt.isEmpty()) {
+                errores.add(new ErrorDTO("id", ErrorTipo.NO_ENCONTRADO));
+            }
+            if (!errores.isEmpty()) {
+                throw new IllegalArgumentException();
+            }
+
+            var j = juegoOpt.get();
+            return juegosRepo.actualizar(id, new JuegoForm(
+                    j.getTitulo(),
+                    j.getDesarrollador(),
+                    j.getFechaLanz(),
+                    j.getPrecioB(),
+                    j.getClasificacionEdad(),
+                    j.getDescripcion(),
+                    (int) descuento,
+                    j.getCategoria(),
+                    j.getIdioma(),
+                    j.getEstadoJuego()
+            ));
+        });
+
         if (!errores.isEmpty()) {
             throw new ValidationException(errores);
         }
 
-
-        var juegoActualizado = juegosRepo.actualizar(id, new JuegoForm(
-            juegoOpt.get().getTitulo(),
-            juegoOpt.get().getDesarrollador(),
-            juegoOpt.get().getFechaLanz(),
-            juegoOpt.get().getPrecioB(),
-            juegoOpt.get().getClasificacionEdad(),
-            juegoOpt.get().getDescripcion(),
-                (int) descuento,
-            juegoOpt.get().getCategoria(),
-            juegoOpt.get().getIdioma(),
-            juegoOpt.get().getEstadoJuego()
-        ));
-
         return Optional.ofNullable(Mapper.mapFromJuego(juegoActualizado.orElse(null)));
     }
-    /*
-    Cambiar estado del juego
-    Descripción: Modificar el estado de disponibilidad de un juego
-    Entrada: ID del juego, nuevo estado
-    Salida: Confirmación del cambio de estado o mensaje de error
-    Validaciones: Juego existe, estado válido
-    */
+
+
+    /**
+     * Cambiar el estado de un juego específico, permitiendo modificar su disponibilidad en la plataforma (por ejemplo, activo, inactivo, en mantenimiento).
+     * @param id
+     * @param estado
+     * @return Información del juego con el nuevo estado o mensaje de error si el juego no existe o el estado es inválido
+     * @throws ValidationException
+     */
     public Optional<JuegoDTO> cambiarEstado(long id , EstadoJuego estado) throws ValidationException{
         List<ErrorDTO> errores = new ArrayList<>();
 
-        var juegoOpt = juegosRepo.leerPorId(id);
-
-        if(juegoOpt.isEmpty()){
-            errores.add(new ErrorDTO("id", ErrorTipo.NO_ENCONTRADO));
-        }
-        if(estado == null) {
+        if (estado == null) {
             errores.add(new ErrorDTO("estado", ErrorTipo.VALOR_INVALIDO));
         }
+
+        var juegoActualizado = tm.inTransaction(() -> {
+            var juegoOpt = juegosRepo.leerPorId(id);
+
+            if (juegoOpt.isEmpty()) {
+                errores.add(new ErrorDTO("id", ErrorTipo.NO_ENCONTRADO));
+            }
+            if (!errores.isEmpty()) {
+                throw new IllegalArgumentException();
+            }
+
+            var j = juegoOpt.get();
+            return juegosRepo.actualizar(id, new JuegoForm(
+                    j.getTitulo(),
+                    j.getDesarrollador(),
+                    j.getFechaLanz(),
+                    j.getPrecioB(),
+                    j.getClasificacionEdad(),
+                    j.getDescripcion(),
+                    j.getDescuento(),
+                    j.getCategoria(),
+                    j.getIdioma(),
+                    estado
+            ));
+        });
+
         if (!errores.isEmpty()) {
             throw new ValidationException(errores);
         }
-
-        var juegoActualizado = juegosRepo.actualizar(id, new JuegoForm(
-                juegoOpt.get().getTitulo(),
-                juegoOpt.get().getDesarrollador(),
-                juegoOpt.get().getFechaLanz(),
-                juegoOpt.get().getPrecioB(),
-                juegoOpt.get().getClasificacionEdad(),
-                juegoOpt.get().getDescripcion(),
-                juegoOpt.get().getDescuento(),
-                juegoOpt.get().getCategoria(),
-                juegoOpt.get().getIdioma(),
-                estado));
         return Optional.ofNullable(Mapper.mapFromJuego(juegoActualizado.orElse(null)));
     }
-
-
 }
+

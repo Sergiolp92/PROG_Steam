@@ -26,11 +26,11 @@ public class JuegoDTO {
         this.desarrollador = desarrollador;
         this.fechaLanz = fechaLanz;
         this.precioB = precioB;
-        this.descuento = 0;
+        this.descuento = descuento;
         this.categoria = categoria;
         this.clasificacionEdad = clasificacionEdad;
         this.idioma = idioma;
-        this.estadoJuego = estadoJuego.DISPONIBLE;
+        this.estadoJuego = estadoJuego;
     }
 
     public Long getIdJuego() {

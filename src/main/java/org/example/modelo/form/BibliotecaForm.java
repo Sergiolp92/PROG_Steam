@@ -10,6 +10,7 @@ import java.util.List;
 
 public class BibliotecaForm {
 
+    public static final int TIEMPO_MIN = 0;
     private Long idUsuario;
     private Long idJuego;
     private LocalDate fechaAdquisicion;
@@ -55,7 +56,7 @@ public class BibliotecaForm {
             errores.add(new ErrorDTO("id usuario",ErrorTipo.REQUERIDO));
         }
 
-        if (tiempoDeJuego  <0){
+        if (tiempoDeJuego  < TIEMPO_MIN){
             errores.add(new ErrorDTO("Tiempo de juego",ErrorTipo.FORMATO_INVALIDO));
         } else if (Math.round(tiempoDeJuego * 10) != tiempoDeJuego * 10) {
             errores.add(new ErrorDTO("Tiempo de juego", ErrorTipo.FORMATO_INVALIDO));

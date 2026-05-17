@@ -28,7 +28,7 @@ public class CompraForm {
         this.precioOriginal = precioOriginal;
         this.precioFinal = precioFinal;
         this.descuento = descuento;
-        this.estadoCompra = estadoCompra;
+        this.estadoCompra = EstadoCompra.PENDIENTE;
 
     }
 
@@ -64,8 +64,11 @@ public class CompraForm {
         return precioFinal;
     }
 
+
+
     public List<ErrorDTO> validar(){
-        List<ErrorDTO> errores = new ArrayList<>();
+        List<ErrorDTO> errores = new ArrayList<ErrorDTO>();
+
 
         if (idUsuario == null){
             errores.add(new ErrorDTO("id Usuario", ErrorTipo.REQUERIDO));
@@ -78,6 +81,8 @@ public class CompraForm {
         if(metodoPago == null ){
             errores.add(new ErrorDTO("método pago", ErrorTipo.REQUERIDO));
         }
+
+
 
         if (precioOriginal == null || precioOriginal <0){
             errores.add(new ErrorDTO("Compra",ErrorTipo.FORMATO_INVALIDO));

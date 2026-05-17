@@ -11,13 +11,13 @@ import java.util.Optional;
 public class ReseniasRepo implements IReseniasRepo {
 
     private static List<ReseniaEntidad> resenias = new ArrayList<>();
-    private static long idContador = (Long) 1l;
+    private static long idContador = 0L;
 
 
     @Override
     public Optional<ReseniaEntidad> crear(ReseniaForm form) {
-        idContador = idContador +1L;
-        var resenia = new ReseniaEntidad((Long)idContador, form.getIdUsuario(), form.getIdJuego(),form.isRecomendado(), form.getTextoResenia(),form.getHorasJugadas(), form.getFechaPublicacionR(),
+
+        var resenia = new ReseniaEntidad(idContador++, form.getIdUsuario(), form.getIdJuego(),form.isRecomendado(), form.getTextoResenia(),form.getHorasJugadas(), form.getFechaPublicacionR(),
                 form.getFechaUltimaEdicion(),form.getEstadoResenia());
 
         resenias.add(resenia);

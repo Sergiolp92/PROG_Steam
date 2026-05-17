@@ -15,6 +15,7 @@ public interface IUsuarioRepo  {
     //leer
     Optional<UsuarioEntidad> leerPorId(Long id);
     Optional<UsuarioEntidad> leerPorNombre(String nombre);
+    Optional<UsuarioEntidad> leerPorEmail(String email);
     List<UsuarioEntidad> leerTodo();
 
 

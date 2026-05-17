@@ -3,7 +3,7 @@ package org.example.controlador;
 
 import org.example.enumerados.ErrorTipo;
 import org.example.enumerados.EstadoCuenta;
-import org.example.enumerados.PaisesPermitidos;
+
 import org.example.excepciones.ValidationException;
 import org.example.mapper.Mapper;
 import org.example.modelo.dto.ErrorDTO;
@@ -11,6 +11,7 @@ import org.example.modelo.dto.UsuarioDTO;
 import org.example.modelo.form.UsuarioForm;
 import org.example.repositorios.enMemoria.UsuariosRepo;
 import org.example.repositorios.interfaz.IUsuarioRepo;
+import org.example.transaction.ITransactionManager;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -19,115 +20,144 @@ import java.util.Optional;
 
 public class UsuarioControlador {
 
+    public static final double CARTERA_0 = 0.00;
+    public static final double CANTIDAD_MIN = 5.00;
+    public static final double CANTIDAD_MAX = 500.00;
     private final IUsuarioRepo usuarioRepo;
+    private ITransactionManager tm;
 
-    public UsuarioControlador(IUsuarioRepo usuarioRepo) {
+    public UsuarioControlador(IUsuarioRepo usuarioRepo, ITransactionManager tm) {
         this.usuarioRepo = usuarioRepo;
+        this.tm= tm;
     }
 
-    /* Registrar nuevo usuario
-     Descripción: Crear una nueva cuenta de usuario en la plataforma
-     Entrada: Datos del formulario de registro (nombre de usuario, email, contraseña, nombre real,
-                                                país, fecha de nacimiento)
-     Salida: Usuario creado exitosamente o lista de errores de validación
-     Validaciones: Aplicar todas las restricciones definidas en la sección de validación de Usuario
+
+    /**
+     * Registrar un nuevo usuario en la plataforma
+     * @param usuarioForm
+     * @return Optional con el UsuarioDTO que contiene la información del usuario registrado
+     * @throws ValidationException
      */
-
-
     public Optional<UsuarioDTO> registrarUsuario(UsuarioForm usuarioForm) throws ValidationException {
         var errores = usuarioForm.validar();
-        var usuarioOpt = usuarioRepo.leerPorNombre(usuarioForm.getnombreusuario());
-        if (usuarioOpt.isPresent())
-            errores.add(new ErrorDTO("Usuario", ErrorTipo.DUPLICADO));
         if (!errores.isEmpty())
             throw new ValidationException(errores);
 
-        var usuarioC = usuarioRepo.crear(usuarioForm);
+        var usuarioC = tm.inTransaction(() -> {
+            var usuarioOpt = usuarioRepo.leerPorNombre(usuarioForm.getnombreusuario());
+            var emailOpt = usuarioRepo.leerPorEmail(usuarioForm.getEmail());
 
-        var usuario = usuarioC.orElse(null);
+            if (usuarioOpt.isPresent())
+                errores.add(new ErrorDTO("Usuario", ErrorTipo.DUPLICADO));
+            if (emailOpt.isPresent())
+                errores.add(new ErrorDTO("Email", ErrorTipo.DUPLICADO));
+            if (!errores.isEmpty())
+                throw new IllegalArgumentException();
 
-        return Optional.ofNullable(Mapper.mapFromUsuario(usuario));
+            return usuarioRepo.crear(usuarioForm);
+        });
 
+        if (!errores.isEmpty())
+            throw new ValidationException(errores);
 
+        return Optional.ofNullable(Mapper.mapFromUsuario(usuarioC.orElse(null)));
     }
 
-    /*Consultar perfil
-    Descripción: Mostrar la información de un usuario específico
-    Entrada: ID o nombre del usuario a consultar
-    Salida: Información del perfil del usuario o mensaje de acceso denegado
-    Información mostrada: Nombre de usuario, avatar, país, fecha de registro, biblioteca y
-    estadísticas de juego
-    */
+
+    /**
+     * Consultar el perfil de un usuario por su ID
+     * @param id
+     * @return Optional con el UsuarioDTO que contiene la información del perfil del usuario
+     * @throws ValidationException
+     */
 
     public Optional<UsuarioDTO> consultarUsuario(Long id) throws ValidationException {
         var errores = new ArrayList<ErrorDTO>();
-        var usuarioOpt = usuarioRepo.leerPorId(id);
+
+        var usuarioOpt = tm.inTransaction(() -> usuarioRepo.leerPorId(id));
+
         if (usuarioOpt.isEmpty()) {
             errores.add(new ErrorDTO("id", ErrorTipo.NO_ENCONTRADO));
         }
-
         if (!errores.isEmpty()) {
             throw new ValidationException(errores);
         }
 
-        var usuario = usuarioOpt.get();
-        return Optional.of(Mapper.mapFromUsuario(usuario));
+        return usuarioOpt.map(Mapper::mapFromUsuario);
     }
 
-    /*Añadir saldo a cartera
-    Descripción: Recargar dinero en la cartera virtual de Steam del usuario
-    Entrada: ID del usuario, cantidad a añadir
-    Salida: Nuevo saldo de la cartera o mensaje de error
-    Validaciones: Cantidad > 0, cuenta activa, rango entre 5.00 y 500.00
-    */
+
+
+
+    /**
+     * Añadir saldo a la cartera de un usuario
+     * @param id
+     * @param cantidad
+     * @return Optional con el UsuarioDTO que contiene el saldo actualizado
+     * @throws ValidationException
+     */
 
 
     public Optional<UsuarioDTO> aniadirSaldo(long id, float cantidad) throws ValidationException {
         List<ErrorDTO> errores = new ArrayList<>();
 
-        var usuarioOpt = usuarioRepo.leerPorId(id);
-        var usuario = usuarioOpt.orElse(null);
-
-        if (usuario == null) {
-            errores.add(new ErrorDTO("Usuario", ErrorTipo.REQUERIDO));
-            throw new ValidationException(errores);
-        }
-
-
-        if (usuario.getEstadoCuenta() != EstadoCuenta.ACTIVA) {
-            errores.add((new ErrorDTO("Cuenta", ErrorTipo.CUENTA)));
-        }
-
-        if (cantidad < 0.00) {
+        if (cantidad < CARTERA_0) {
             errores.add(new ErrorDTO("Saldo", ErrorTipo.FORMATO_INVALIDO));
         }
-
-        if (cantidad < 5.00 || cantidad > 500.00) {
+        if (cantidad < CANTIDAD_MIN || cantidad > CANTIDAD_MAX) {
             errores.add(new ErrorDTO("Saldo", ErrorTipo.FUERA_DE_RANGO));
         }
+
+        var usuarioActualizado = tm.inTransaction(() -> {
+            var usuarioOpt = usuarioRepo.leerPorId(id);
+
+            if (usuarioOpt.isEmpty()) {
+                errores.add(new ErrorDTO("Usuario", ErrorTipo.REQUERIDO));
+            }
+            if (usuarioOpt.isPresent() && usuarioOpt.get().getEstadoCuenta() != EstadoCuenta.ACTIVA) {
+                errores.add(new ErrorDTO("Cuenta", ErrorTipo.CUENTA));
+            }
+            if (!errores.isEmpty()) {
+                throw new IllegalArgumentException();
+            }
+
+            var u = usuarioOpt.get();
+            double saldoNuevo = u.getSaldo() + cantidad;
+
+            return usuarioRepo.actualizar(id, new UsuarioForm(
+                    u.getNombreUsuario(),
+                    u.getEmail(),
+                    u.getContrasenia(),
+                    u.getNombreRealU(),
+                    u.getPais(),
+                    saldoNuevo,
+                    u.getFechaN(),
+                    u.getFechaRegis(),
+                    u.getAvatar()
+            ));
+        });
 
         if (!errores.isEmpty()) {
             throw new ValidationException(errores);
         }
 
-        double saldoNuevo = usuario.getSaldo() + cantidad;
-
-        var usuarioSaldoActualizado = usuarioRepo.actualizar(id, new UsuarioForm(usuario.getNombreUsuario(), usuario.getEmail(), usuario.getContrasenia(), usuario.getNombreRealU(),
-                usuario.getPais(), saldoNuevo, usuario.getFechaN(), usuario.getFechaRegis(), usuario.getAvatar()));
-
-        return Optional.ofNullable(Mapper.mapFromUsuario(usuarioSaldoActualizado.orElse(null)));
+        return Optional.ofNullable(Mapper.mapFromUsuario(usuarioActualizado.orElse(null)));
     }
-/*Consultar saldo
 
-    Descripción: Mostrar el saldo disponible en la cartera Steam de un usuario
-    Entrada: ID del usuario
-    Salida: Saldo actual de la cartera (ejemplo: "45.67 €")
-    Validaciones: Usuario debe existir en el sistema*/
+
+    /**
+     * Consultar el saldo de un usuario por su ID
+     * @param id
+     * @return Optional con el UsuarioDTO que contiene el saldo actualizado
+     * @throws ValidationException
+     */
 
 
     public Optional<UsuarioDTO> consultarSaldo(long id) throws ValidationException {
         List<ErrorDTO> errores = new ArrayList<>();
-        var usuarioOpt = usuarioRepo.leerPorId(id);
+
+        var usuarioOpt = tm.inTransaction(() -> usuarioRepo.leerPorId(id));
+
         if (usuarioOpt.isEmpty()) {
             errores.add(new ErrorDTO("id", ErrorTipo.NO_ENCONTRADO));
             throw new ValidationException(errores);

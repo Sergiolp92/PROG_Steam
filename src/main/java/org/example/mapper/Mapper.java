@@ -13,7 +13,7 @@ public class Mapper {
             entidad.getNombreUsuario(),
             entidad.getEmail(),
             entidad.getNombreRealU(),
-            entidad.getPais(),
+            entidad.getPais() ,
             entidad.getFechaN(),
             entidad.getFechaRegis(),
             entidad.getAvatar(),

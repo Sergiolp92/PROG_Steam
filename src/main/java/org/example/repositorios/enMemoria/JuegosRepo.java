@@ -60,7 +60,7 @@ public class JuegosRepo implements IJuegosRepo {
 
         var juegoActualizado = new JuegoEntidad(id, form.getTitulo(), form.getDescripcion(), form.getDesarrollador(), form.getFechaL(),
                 form.getPrecioB(),form.getDescuento(),form.getCategoria(), form.getClasiEdad(), form.getIdioma(), form.getEstadoJuego());
-        juegos.removeIf(j ->id.equals(j.getIdJuego()));
+        juegos.removeIf(j ->j.getIdJuego() == id);
         juegos.add(juegoActualizado);
 
         return Optional.of(juegoActualizado);
@@ -74,8 +74,5 @@ public class JuegosRepo implements IJuegosRepo {
 
     }
 
-    public static void main(String[] args) {
-        new JuegosRepo().crear(new JuegoForm("asdad", "asdasd", LocalDate.now(), 12d, ClasificacionEdad.PEGI_7, "asdasd", 1, "asdasd", "asdasd", EstadoJuego.DISPONIBLE));
 
-    }
 }
